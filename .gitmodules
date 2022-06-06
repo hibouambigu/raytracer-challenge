@@ -1,0 +1,3 @@
+[submodule "libraytracer/tests/gtest"]
+	path = libraytracer/tests/gtest
+	url = https://github.com/google/googletest.git
