@@ -14,58 +14,72 @@ constexpr size_t TUPLE_LENGTH{ 4 };
 
 struct Tuple
 {
-    Tuple(double x, double y, double z, double w);
-    Tuple();
+    Tuple(double x, double y, double z, double w) : x(x), y(y), z(z), w(w){};
+    Tuple() = default;
 
-    static Tuple Vector(double x, double y, double z) { return {x, y, z, 0.0}; };
-    static Tuple Point(double x, double y, double z) { return {x, y, z, 1.0}; };
+    static Tuple Vector(double x, double y, double z) { return { x, y, z, 0.0 }; };
+    static Tuple Point(double x, double y, double z) { return { x, y, z, 1.0 }; };
 
     friend bool operator==(const Tuple& a, const Tuple& b)
     {
-        for (size_t i{}; i < TUPLE_LENGTH; ++i)
-            if (!ApproxEqual(a.tuple[i], a.tuple[i])) return false;
-        return true;
+        return !(a.x != b.x || a.y != b.y || a.z != b.z || a.w != b.w);
     }
 
     friend Tuple operator+(const Tuple& a, const Tuple& b)
     {
-        return Tuple{ a.tuple[0] + b.tuple[0], a.tuple[1] + b.tuple[1], a.tuple[2] + b.tuple[2],
-                      a.tuple[3] + b.tuple[3] };
+        return Tuple{ a.x + b.x, a.y + b.y, a.z + b.z,
+                      a.w + b.w };
     }
 
     friend Tuple operator*(const Tuple& a, const double& s)
     {
-        return Tuple{ a.tuple[0] * s, a.tuple[1] * s, a.tuple[2] * s, a.tuple[3] * s };
+        return Tuple{ a.x * s, a.y * s, a.z * s, a.w * s };
     }
 
     friend Tuple operator/(const Tuple& a, const double& s)
     {
-        return Tuple{ a.tuple[0] / s, a.tuple[1] / s, a.tuple[2] / s, a.tuple[3] / s };
+        return Tuple{ a.x / s, a.y / s, a.z / s, a.w / s };
     }
 
     friend Tuple operator-(const Tuple& a, const Tuple& b)
     {
-        return Tuple{ a.tuple[0] - b.tuple[0], a.tuple[1] - b.tuple[1], a.tuple[2] - b.tuple[2],
-                      a.tuple[3] - b.tuple[3] };
+        return Tuple{ a.x - b.x, a.y - b.y, a.z - b.z,
+                      a.w - b.w };
     }
 
     /// negate the tuple (ie: subtract it from the zero vector)
-    Tuple operator-() { return Tuple{ 0 - tuple[0], 0 - tuple[1], 0 - tuple[2], 0 - tuple[3] }; }
+    Tuple operator-() { return Tuple{ 0 - x, 0 - y, 0 - z, 0 - w }; }
 
     double magnitude() const
     {
-        return sqrt(tuple[0] * tuple[0] + tuple[1] * tuple[1] + tuple[2] * tuple[2] +
-                    tuple[3] * tuple[3]);
+        return sqrt(x * x + y * y + z * z +
+                    w * w);
     };
 
     static Tuple normalize(const Tuple& t)
     {
         auto const M = t.magnitude();
-        return Tuple{ t.tuple[0] / M, t.tuple[1] / M, t.tuple[2] / M, t.tuple[3] / M };
+        return Tuple{ t.x / M, t.y / M, t.z / M, t.w / M };
     }
 
-    bool isPoint() { return tuple[3] == 1.0; };
-    bool isVector() { return tuple[3] == 0.0; };
+    static double dot(const Tuple& a, const Tuple& b)
+    {
+        return a.x * b.x + a.y * b.y + a.z * b.z +
+               a.w * b.w;
+    }
 
-    double tuple[4]{};
+    static Tuple cross(const Tuple& a, const Tuple& b)
+    {
+        constexpr int X{0}, Y{1}, Z{2};
+        return Tuple::Vector(
+            (a.y * b.z - a.z * b.y),
+            (a.z * b.x - a.x * b.z),
+            (a.x * b.y - a.y * b.x)
+        );
+    }
+
+    bool isPoint() { return w == 1.0; };
+    bool isVector() { return w == 0.0; };
+
+    double x, y, z, w;
 };

@@ -23,10 +23,10 @@ ColumnLimit: '100'
 CommentPragmas: FORMAT_IGNORE
 CompactNamespaces: 'false'
 # !!ADD ONCE ON CLANG >=V14.0!!
-# PackConstructorInitializers: NextLine
+PackConstructorInitializers: NextLine
 # ... and comment out the following depreciated two options once on v14:
-AllowAllConstructorInitializersOnNextLine: 'true'
-ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
+#AllowAllConstructorInitializersOnNextLine: 'true'
+#ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
 # ... don't remove below this point.
 ConstructorInitializerIndentWidth: '0'
 ContinuationIndentWidth: '4'

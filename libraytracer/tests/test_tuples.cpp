@@ -1,12 +1,71 @@
 #include "gtest/gtest.h"
 #include <tuples.h>
 
-TEST(TupleBasics, ZeroWIsAPoint)
+// Tuple Basics
+TEST(TupleBasics, ZeroWIsPoint)
 {
     // a tuple created with w=1.0 is a point
-    Tuple a{4.3, -4.2, 3.1, 1.0};
+    Tuple a{ 4.3, -4.2, 3.1, 1.0 };
+    EXPECT_DOUBLE_EQ(a.x, 4.3);
+    EXPECT_DOUBLE_EQ(a.y, -4.2);
+    EXPECT_DOUBLE_EQ(a.z, 3.1);
+    EXPECT_DOUBLE_EQ(a.w, 1.0);
+    EXPECT_TRUE(a.isPoint());
+    EXPECT_FALSE(a.isVector());
+}
+TEST(TupleBasics, OneWIsVector)
+{
+    // a tuple created with w=0.0 is a vector
+    Tuple a{ 4.3, -4.2, 3.1, 0.0 };
+    EXPECT_DOUBLE_EQ(a.x, 4.3);
+    EXPECT_DOUBLE_EQ(a.y, -4.2);
+    EXPECT_DOUBLE_EQ(a.z, 3.1);
+    EXPECT_DOUBLE_EQ(a.w, 0.0);
+    EXPECT_FALSE(a.isPoint());
+    EXPECT_TRUE(a.isVector());
 }
 
+TEST(TupleBasics, PointCreationWIs1)
+{
+    // point() creates tuples with w=1
+    auto p = Tuple::Point(4, -4, 3);
+    auto t = Tuple{ 4, -4, 3, 1 };
+    EXPECT_EQ(p, t);
+}
+
+TEST(TupleBasics, VectorCreationWis0)
+{
+    // vector() creates tuples with w=0
+    auto p = Tuple::Point(4, -4, 3);
+    auto t = Tuple{ 4, -4, 3, 1 };
+    EXPECT_EQ(p, t);
+}
+
+TEST(VectorGeometry, Normalisation)
+{
+    // normalising vector (4, 0, 0) yields (1, 0, 0)
+    auto v = Tuple::Vector(4, 0, 0);
+    EXPECT_EQ(Tuple::normalize(v), Tuple::Vector(1, 0, 0));
+}
+
+TEST(VectorGeometry, DotProduct)
+{
+    // dot product of two tuples is 20
+    auto a = Tuple::Vector(1, 2, 3);
+    auto b = Tuple::Vector(2, 3, 4);
+    EXPECT_DOUBLE_EQ(Tuple::dot(a, b), 20);
+}
+
+TEST(VectorGeometry, CrossProduct)
+{
+    // cross product of two vectors
+    auto a = Tuple::Vector(1, 2, 3);
+    auto b = Tuple::Vector(2, 3, 4);
+    ASSERT_EQ(Tuple::cross(a, b), Tuple::Vector(-1, 2, -1));
+    ASSERT_EQ(Tuple::cross(b, a), Tuple::Vector(1, -2, 1));
+}
+
+// Tuple Arithmetic
 //#define CATCH_CONFIG_MAIN
 //
 //#include "catch.hpp"
@@ -18,20 +77,20 @@ TEST(TupleBasics, ZeroWIsAPoint)
 //    SECTION("a tuple created with w=1.0 is a point")
 //    {
 //        Tuple a{ 4.3, -4.2, 3.1, 1.0 };
-//        REQUIRE(a.tuple[0] == Approx(4.3));
-//        REQUIRE(a.tuple[1] == Approx(-4.2));
-//        REQUIRE(a.tuple[2] == Approx(3.1));
-//        REQUIRE(a.tuple[3] == Approx(1.0));
+//        REQUIRE(a.x, 4.3));
+//        EXPECT_DOUBLE_EQ(a.y, -4.2));
+//        EXPECT_DOUBLE_EQ(a.z, 3.1));
+//        EXPECT_DOUBLE_EQ(a.w, 1.0));
 //        REQUIRE(a.isPoint() == true);
 //        REQUIRE(a.isVector() == false);
 //    }
 //    SECTION("a tuple created with w=0.0 is a vector")
 //    {
 //        Tuple a{ 4.3, -4.2, 3.1, 0.0 };
-//        REQUIRE(a.tuple[0] == Approx(4.3));
-//        REQUIRE(a.tuple[1] == Approx(-4.2));
-//        REQUIRE(a.tuple[2] == Approx(3.1));
-//        REQUIRE(a.tuple[3] == Approx(0.0));
+//        EXPECT_DOUBLE_EQ(a.x, 4.3));
+//        EXPECT_DOUBLE_EQ(a.y, -4.2));
+//        EXPECT_DOUBLE_EQ(a.z, 3.1));
+//        EXPECT_DOUBLE_EQ(a.w, 0.0));
 //        REQUIRE(a.isPoint() == false);
 //        REQUIRE(a.isVector() == true);
 //    }
@@ -39,13 +98,13 @@ TEST(TupleBasics, ZeroWIsAPoint)
 //    {
 //        auto p = Tuple::Point(4, -4, 3);
 //        auto t = Tuple{ 4, -4, 3, 1 };
-//        REQUIRE(p == t);
+//        EXPECT_DOUBLE_EQ(p == t);
 //    }
 //    SECTION("vector() creates tuples with w=0")
 //    {
 //        auto p = Tuple::Vector(4, -4, 3);
 //        auto t = Tuple{ 4, -4, 3, 0 };
-//        REQUIRE(p == t);
+//        EXPECT_DOUBLE_EQ(p == t);
 //    }
 //}
 //
@@ -136,4 +195,3 @@ TEST(TupleBasics, ZeroWIsAPoint)
 //        REQUIRE(Tuple::normalize(v) == Tuple::Vector(1, 0, 0));
 //    }
 //}
-
