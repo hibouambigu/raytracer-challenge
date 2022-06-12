@@ -8,7 +8,7 @@ include_directories(libraytracer)
 
 add_subdirectory(libraytracer/tests)
 
-add_executable(raytracer raytracer/raytracer/main.cpp libraytracer/libraytracer/tuples.cpp libraytracer/libraytracer/colours.cpp)
+add_executable(raytracer raytracer/raytracer/main.cpp libraytracer/libraytracer/tuples.cpp libraytracer/libraytracer/colours.cpp libraytracer/libraytracer/canvas.cpp libraytracer/libraytracer/matrix_2d.cpp)
 
 
 

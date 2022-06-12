@@ -8,6 +8,13 @@ class BasicColours : public ::testing::Test
     Colour c2{ .7, .1, .25 };
 };
 
+TEST_F(BasicColours, DefaultIsBlack)
+{
+    auto c = Colour{ };
+    auto expected = Colour{0., 0., 0.};
+    EXPECT_EQ(c, expected);
+}
+
 TEST_F(BasicColours, AddingColours)
 {
     auto sum = c1 + c2;
