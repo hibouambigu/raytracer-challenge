@@ -28,7 +28,7 @@ TEST(TupleBasics, OneWIsVector)
 TEST(TupleBasics, PointCreationWIs1)
 {
     // point() creates tuples with w=1
-    auto p = Tuple::Point(4, -4, 3);
+    auto p = Point(4, -4, 3);
     auto t = Tuple{ 4, -4, 3, 1 };
     EXPECT_EQ(p, t);
 }
@@ -36,7 +36,7 @@ TEST(TupleBasics, PointCreationWIs1)
 TEST(TupleBasics, VectorCreationWis0)
 {
     // vector() creates tuples with w=0
-    auto p = Tuple::Point(4, -4, 3);
+    auto p = Point(4, -4, 3);
     auto t = Tuple{ 4, -4, 3, 1 };
     EXPECT_EQ(p, t);
 }
@@ -44,25 +44,25 @@ TEST(TupleBasics, VectorCreationWis0)
 TEST(VectorGeometry, Normalisation)
 {
     // normalising vector (4, 0, 0) yields (1, 0, 0)
-    auto v = Tuple::Vector(4, 0, 0);
-    EXPECT_EQ(Tuple::normalize(v), Tuple::Vector(1, 0, 0));
+    auto v = Vector(4, 0, 0);
+    EXPECT_EQ(Tuple::normalize(v), Vector(1, 0, 0));
 }
 
 TEST(VectorGeometry, DotProduct)
 {
     // dot product of two tuples is 20
-    auto a = Tuple::Vector(1, 2, 3);
-    auto b = Tuple::Vector(2, 3, 4);
+    auto a = Vector(1, 2, 3);
+    auto b = Vector(2, 3, 4);
     EXPECT_DOUBLE_EQ(Tuple::dot(a, b), 20);
 }
 
 TEST(VectorGeometry, CrossProduct)
 {
     // cross product of two vectors
-    auto a = Tuple::Vector(1, 2, 3);
-    auto b = Tuple::Vector(2, 3, 4);
-    ASSERT_EQ(Tuple::cross(a, b), Tuple::Vector(-1, 2, -1));
-    ASSERT_EQ(Tuple::cross(b, a), Tuple::Vector(1, -2, 1));
+    auto a = Vector(1, 2, 3);
+    auto b = Vector(2, 3, 4);
+    ASSERT_EQ(cross(a, b), Vector(-1, 2, -1));
+    ASSERT_EQ(cross(b, a), Vector(1, -2, 1));
 }
 
 // Tuple Arithmetic
@@ -96,13 +96,13 @@ TEST(VectorGeometry, CrossProduct)
 //    }
 //    SECTION("point() creates tuples with w=1")
 //    {
-//        auto p = Tuple::Point(4, -4, 3);
+//        auto p = Point(4, -4, 3);
 //        auto t = Tuple{ 4, -4, 3, 1 };
 //        EXPECT_DOUBLE_EQ(p == t);
 //    }
 //    SECTION("vector() creates tuples with w=0")
 //    {
-//        auto p = Tuple::Vector(4, -4, 3);
+//        auto p = Vector(4, -4, 3);
 //        auto t = Tuple{ 4, -4, 3, 0 };
 //        EXPECT_DOUBLE_EQ(p == t);
 //    }
@@ -118,21 +118,21 @@ TEST(VectorGeometry, CrossProduct)
 //    }
 //    SECTION("subtracting two points results in a vector")
 //    {
-//        auto p1 = Tuple::Point(3, 2, 1);
-//        auto p2 = Tuple::Point(5, 6, 7);
-//        REQUIRE(p1 - p2 == Tuple::Vector(-2, -4, -6));
+//        auto p1 = Point(3, 2, 1);
+//        auto p2 = Point(5, 6, 7);
+//        REQUIRE(p1 - p2 == Vector(-2, -4, -6));
 //    }
 //    SECTION("subtracting a vector from a point results in a point")
 //    {
-//        auto p1 = Tuple::Point(3, 2, 1);
-//        auto p2 = Tuple::Vector(5, 6, 7);
-//        REQUIRE(p1 - p2 == Tuple::Point(-2, -4, -6));
+//        auto p1 = Point(3, 2, 1);
+//        auto p2 = Vector(5, 6, 7);
+//        REQUIRE(p1 - p2 == Point(-2, -4, -6));
 //    }
 //    SECTION("subtracting two vectors results in a vector")
 //    {
-//        auto v1 = Tuple::Vector(3, 2, 1);
-//        auto v2 = Tuple::Vector(5, 6, 7);
-//        REQUIRE(v1 - v2 == Tuple::Vector(-2, -4, -6));
+//        auto v1 = Vector(3, 2, 1);
+//        auto v2 = Vector(5, 6, 7);
+//        REQUIRE(v1 - v2 == Vector(-2, -4, -6));
 //    }
 //    SECTION("negating a tuple")
 //    {
@@ -142,19 +142,19 @@ TEST(VectorGeometry, CrossProduct)
 //    SECTION("multiplying a tuple by a scalar")
 //    {
 //        auto a = Tuple{ 1, -2, 3, -4 };
-//        // auto v2 = Tuple::Vector(5, 6, 7);
+//        // auto v2 = Vector(5, 6, 7);
 //        REQUIRE(a * 3.5 == Tuple(3.5, -7, 10.5, -14));
 //    }
 //    SECTION("multiplying a tuple by a fraction")
 //    {
 //        auto a = Tuple{ 1, -2, 3, -4 };
-//        // auto v2 = Tuple::Vector(5, 6, 7);
+//        // auto v2 = Vector(5, 6, 7);
 //        REQUIRE(a * .5 == Tuple(0.5, -1, 1.5, -2));
 //    }
 //    SECTION("multiplying a tuple by a scalar")
 //    {
 //        auto a = Tuple{ 1, -2, 3, -4 };
-//        // auto v2 = Tuple::Vector(5, 6, 7);
+//        // auto v2 = Vector(5, 6, 7);
 //        REQUIRE(a / 2 == Tuple(0.5, -1, 1.5, -2));
 //    }
 //}
@@ -163,27 +163,27 @@ TEST(VectorGeometry, CrossProduct)
 //{
 //    SECTION("magnitude of vector (1, 0, 0)")
 //    {
-//        auto v = Tuple::Vector(1, 0, 0);
+//        auto v = Vector(1, 0, 0);
 //        REQUIRE(v.magnitude() == 1);
 //    }
 //    SECTION("magnitude of vector (0, 1, 0)")
 //    {
-//        auto v = Tuple::Vector(0, 1, 0);
+//        auto v = Vector(0, 1, 0);
 //        REQUIRE(v.magnitude() == 1);
 //    }
 //    SECTION("magnitude of vector (0, 0, 1)")
 //    {
-//        auto v = Tuple::Vector(0, 0, 1);
+//        auto v = Vector(0, 0, 1);
 //        REQUIRE(v.magnitude() == 1);
 //    }
 //    SECTION("magnitude of vector (1, 2, 3)")
 //    {
-//        auto v = Tuple::Vector(1, 2, 3);
+//        auto v = Vector(1, 2, 3);
 //        REQUIRE(v.magnitude() == sqrt(14));
 //    }
 //    SECTION("magnitude of vector (-1, -2, -3)")
 //    {
-//        auto v = Tuple::Vector(-1, -2, -3);
+//        auto v = Vector(-1, -2, -3);
 //        REQUIRE(v.magnitude() == sqrt(14));
 //    }
 //}
@@ -191,7 +191,7 @@ TEST(VectorGeometry, CrossProduct)
 //{
 //    SECTION("normalising vector (4, 0, 0) yields (1, 0, 0)")
 //    {
-//        auto v = Tuple::Vector(4, 0, 0);
-//        REQUIRE(Tuple::normalize(v) == Tuple::Vector(1, 0, 0));
+//        auto v = Vector(4, 0, 0);
+//        REQUIRE(Tuple::normalize(v) == Vector(1, 0, 0));
 //    }
 //}
