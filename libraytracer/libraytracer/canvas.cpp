@@ -4,7 +4,6 @@
 Canvas::Canvas(size_t width, size_t height)
 : width(width), height(height), pixels(width, height)
 {
-    std::cout << "matrix is blank? " << (pixels.isBlank() ? "TRUE" : "FALSE") << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,4 +16,29 @@ size_t Canvas::getWidth()
 size_t Canvas::getHeight()
 {
     return height;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void Canvas::writePixel(size_t x, size_t y, Colour& colour)
+{
+    pixels.set(x, y, colour);
+}
+
+Colour Canvas::pixelAt(size_t x, size_t y)
+{
+    return pixels.get(x, y);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Canvas::isBlank()
+{
+    return pixels.isBlank();
+}
+
+std::string Canvas::generatePPMHeader() const
+{
+    std::string header = "P3\n";
+    header += std::to_string(width) + " " + std::to_string(height) + "\n";
+    header += "255\n";
+    return header;
 }

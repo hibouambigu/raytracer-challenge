@@ -23,7 +23,7 @@ TEST_F(Matrix2DBasics, BasicGeometry)
 TEST_F(Matrix2DBasics, AllElementsInitAsZero)
 {
     EXPECT_EQ(pixels.get(0, 0), Colour{});
-    EXPECT_EQ(pixels.get(pixels.getWidth(), pixels.getHeight()), Colour{});
+    EXPECT_EQ(pixels.get(pixels.getWidth()-1, pixels.getHeight()-1), Colour{});
 }
 
 TEST_F(Matrix2DBasics, IsBlank)
@@ -40,9 +40,10 @@ TEST_F(Matrix2DBasics, IsNotBlank)
 TEST_F(Matrix2DBasics, SettingAndGetting)
 {
     auto c = Colour{ .5f, .2f, .75f };
-    size_t x = pixels.getWidth(), y = pixels.getHeight();
+    size_t x = pixels.getWidth()-1, y = pixels.getHeight()-1;
     pixels.set(x, y, c);
     EXPECT_EQ(pixels.get(x, y), c);
-    pixels.set(5, 5, Colour{});
-    EXPECT_EQ(pixels.get(5, 5), Colour{});
+    auto c2 = Colour{ 0.25f, 0.3f, 0.66f };
+    pixels.set(7, 15, c2);
+    EXPECT_EQ(pixels.get(7, 15), c2);
 }

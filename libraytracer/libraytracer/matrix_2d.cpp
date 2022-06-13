@@ -21,14 +21,14 @@ size_t Matrix2D<T>::getWidth()
 template <typename T>
 T Matrix2D<T>::get(size_t x, size_t y)
 {
-    return *(matrix[y][x]);
+    return *(matrix[x][y]);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 void Matrix2D<T>::set(size_t x, size_t y, T value)
 {
-    *(matrix[0][0]) = value;
+    *(matrix[x][y]) = value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
