@@ -1,19 +1,20 @@
 #include <iostream>
 #include <libraytracer/tuples.h>
+#include <libraytracer/matrix_2d.h>
 
 
 struct Projectile
 {
     Projectile(Tuple pos, Tuple v) : pos(pos), v(v) {};
     Tuple pos, v;
-    double getX() { return pos.tuple[0]; };
-    double getY() { return pos.tuple[1]; };
+    double getX() { return pos.x; };
+    double getY() { return pos.y; };
 };
 
 struct Environment
 {
-    Environment(Tuple gravity, Tuple wind) : g(gravity), f(wind){};
-    Tuple g, f;
+    Environment(Vector gravity, Vector wind) : g(gravity), f(wind){};
+    Vector g, f;
 
     /// returns a new projectile after 1 unit of time has passed
     static Projectile tick(const Environment& e, const Projectile& p)
@@ -26,13 +27,13 @@ struct Environment
 int main()
 {
     auto p = Projectile(
-                 Tuple::Point(0, 1, 0),
-                 Tuple::normalize(Tuple::Vector(2, 2, 0))
+                 Point(0, 1, 0),
+                 Tuple::normalize(Vector(2, 2, 0))
                  );
 
     auto e = Environment(
-                 Tuple::Vector(0, -0.01, 0),
-                 Tuple::Vector(-0.01, 0, 0)
+                 Vector(0, -0.01, 0),
+                 Vector(-0.01, 0, 0)
                  );
 
     while (p.getY() > 0)

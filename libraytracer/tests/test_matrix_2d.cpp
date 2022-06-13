@@ -47,3 +47,16 @@ TEST_F(Matrix2DBasics, SettingAndGetting)
     pixels.set(7, 15, c2);
     EXPECT_EQ(pixels.get(7, 15), c2);
 }
+
+TEST_F(Matrix2DBasics, GetRawMatrixData)
+{
+    auto c = Colour{ .5f, .2f, .75f };
+    size_t x = pixels.getWidth()-1, y = pixels.getHeight()-1;
+    pixels.set(x, y, c);
+    auto data = *(pixels.getMatrix()[x][y]);
+
+    EXPECT_EQ(data, c);
+//    auto c2 = Colour{ 0.25f, 0.3f, 0.66f };
+//    pixels.set(7, 15, c2);
+//    EXPECT_EQ(pixels.get(7, 15), c2);
+}

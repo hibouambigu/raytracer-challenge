@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+#include <iostream>
+#include <fstream>
 
-#include <colours.h>
-#include <matrix_2d.h>
+#include "colours.h"
+#include "matrix_2d.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class Canvas
@@ -16,6 +18,8 @@ class Canvas
     void writePixel(size_t x, size_t y, Colour& colour);
     Colour pixelAt(size_t x, size_t y);
     std::string generatePPMHeader() const;
+    std::string generatePPMData();
+    bool writePPMToFile() const;
 
   private:
     size_t width, height;

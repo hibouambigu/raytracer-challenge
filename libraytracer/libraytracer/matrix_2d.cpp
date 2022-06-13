@@ -1,4 +1,4 @@
-#include <matrix_2d.h>
+#include "matrix_2d.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -38,6 +38,7 @@ size_t Matrix2D<T>::getHeight()
     return height;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 bool Matrix2D<T>::isBlank()
 {
@@ -45,6 +46,13 @@ bool Matrix2D<T>::isBlank()
         for (const auto& col: row)
             if (*col != T{}) return false;
     return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+const std::vector<std::vector<T*>>& Matrix2D<T>::getMatrix() const
+{
+    return matrix;
 }
 
 
