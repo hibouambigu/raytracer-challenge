@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-
 #include "colours.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,9 +14,9 @@ class Matrix2D
     bool isBlank();
     T get(size_t x, size_t y);
     void set(size_t x, size_t y, T value);
-    const std::vector<std::vector<T*>>& getMatrix() const;
+    const std::vector<std::vector<T>>& getMatrix() const;
 
   private:
     size_t width, height;
-    std::vector<std::vector<T*>> matrix;
+    std::vector<std::vector<T>> matrix;
 };

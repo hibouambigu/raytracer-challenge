@@ -34,3 +34,9 @@ bool operator==(const Colour& a, const Colour& b)
     return APPROX_EQ(a.R, b.R) && APPROX_EQ(a.G, b.G) && APPROX_EQ(a.B, b.B);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+std::ostream& operator<<(std::ostream& os, const Colour& c)
+{
+    os << c.R << "r " << c.G << "g " << c.B << "b\n";
+    return os;
+}

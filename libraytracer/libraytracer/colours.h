@@ -19,6 +19,8 @@ struct Colour
     friend Colour operator*(const Colour& a, const Colour& b);
     /// colour equivalence
     friend bool operator==(const Colour& a, const Colour& b);
+    /// print a stream representing this colour
+    friend std::ostream& operator<<(std::ostream& os, const Colour& c);
 
     /// print a representation of this colour to stdout
     static void print(const Colour& colour)

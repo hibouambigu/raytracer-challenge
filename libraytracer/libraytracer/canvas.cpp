@@ -55,7 +55,7 @@ std::string Canvas::generatePPMData()
     for (const auto& row: pixels.getMatrix())
         for (const auto& pix: row)
         {
-            std::cout << pix->R << "/" << pix->G << "/" << pix->B << "\n";
+            std::cout << pix.R << "/" << pix.G << "/" << pix.B << "\n";
         }
     Colour::print(pixels.get(0, 0));
     return expected;

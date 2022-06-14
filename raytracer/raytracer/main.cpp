@@ -21,10 +21,9 @@ struct Environment
     {
         return {p.pos + p.v, p.v + e.g + e.f};
     }
-
 };
 
-int main()
+void run_projectile()
 {
     auto p = Projectile(
                  Point(0, 1, 0),
@@ -41,5 +40,16 @@ int main()
         std::cout << "Pos: (" << p.getX() << ", " << p.getY() <<")\n";
         p = Environment::tick(e, p);
     };
+}
+
+int main()
+{
+//    run_projectile();
+    auto matrix = Matrix2D<Colour>(5, 10);
+    matrix.set(4, 8, Colour{.25, .5, .6667});
+    matrix.set(3, 7, Colour{.75, .2, .3});
+    std::cout << matrix.get(4, 8) << "\n" << matrix.get(3, 7) << "\n";
+
+
     return 1;
 }

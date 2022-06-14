@@ -5,7 +5,7 @@ template <typename T>
 Matrix2D<T>::Matrix2D(size_t width, size_t height)
 : width(width), height(height)
 {
-    auto row = std::vector<T*>(height, new T{});
+    auto row = std::vector<T>(height, T{});
     matrix.resize(width, row);
 }
 
@@ -21,14 +21,15 @@ size_t Matrix2D<T>::getWidth()
 template <typename T>
 T Matrix2D<T>::get(size_t x, size_t y)
 {
-    return *(matrix[x][y]);
+    return matrix[x][y];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 void Matrix2D<T>::set(size_t x, size_t y, T value)
 {
-    *(matrix[x][y]) = value;
+    matrix[x][y] = value;
+    std::cout << value << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,13 +45,13 @@ bool Matrix2D<T>::isBlank()
 {
     for (const auto& row: matrix)
         for (const auto& col: row)
-            if (*col != T{}) return false;
+            if (col != T{}) return false;
     return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-const std::vector<std::vector<T*>>& Matrix2D<T>::getMatrix() const
+const std::vector<std::vector<T>>& Matrix2D<T>::getMatrix() const
 {
     return matrix;
 }
