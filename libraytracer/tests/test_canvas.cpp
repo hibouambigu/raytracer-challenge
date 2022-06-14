@@ -40,9 +40,6 @@ TEST_F(CanvasBasics, GeneratesPPMPixelData)
     canvas.writePixel(0, 0, c1);
     canvas.writePixel(2, 1, c2);
     canvas.writePixel(4, 2, c3);
-    Colour::print(canvas.pixelAt(0, 0));
-    Colour::print(canvas.pixelAt(2, 1));
-    Colour::print(canvas.pixelAt(4, 2));
     auto ppm = c.generatePPMData();
     const char* expected =
         "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0"

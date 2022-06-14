@@ -29,7 +29,6 @@ template <typename T>
 void Matrix2D<T>::set(size_t x, size_t y, T value)
 {
     matrix[x][y] = value;
-    std::cout << value << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <algorithm>
 #include "utils.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,6 +28,9 @@ struct Colour
     {
         std::cout << "RGB: " << colour.R << "/" << colour.G << "/" << colour.B << "\n";
     }
+
+    /// Colour() to PPM 8bit format pixel data
+    static std::string toPPM8b(const Colour& colour);
 
     double R, G, B;
 };

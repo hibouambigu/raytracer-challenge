@@ -49,7 +49,5 @@ int main()
     matrix.set(4, 8, Colour{.25, .5, .6667});
     matrix.set(3, 7, Colour{.75, .2, .3});
     std::cout << matrix.get(4, 8) << "\n" << matrix.get(3, 7) << "\n";
-
-
     return 1;
 }

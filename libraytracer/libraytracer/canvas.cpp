@@ -52,12 +52,11 @@ std::string Canvas::generatePPMData()
         "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
         "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0"
         "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255";
-    for (const auto& row: pixels.getMatrix())
-        for (const auto& pix: row)
-        {
-            std::cout << pix.R << "/" << pix.G << "/" << pix.B << "\n";
-        }
-    Colour::print(pixels.get(0, 0));
+//    for (const auto& row: pixels.getMatrix())
+//        for (const auto& pix: row)
+//        {
+//            std::cout << pix.R << "/" << pix.G << "/" << pix.B << "\n";
+//        }
     return expected;
 }
 

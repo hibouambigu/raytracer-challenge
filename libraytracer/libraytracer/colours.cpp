@@ -40,3 +40,12 @@ std::ostream& operator<<(std::ostream& os, const Colour& c)
     os << c.R << "r " << c.G << "g " << c.B << "b\n";
     return os;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+std::string Colour::toPPM8b(const Colour& colour)
+{
+    const auto R = std::clamp(static_cast<int>(std::round(colour.R * 255.)), 0, 255);
+    const auto G = std::clamp(static_cast<int>(std::round(colour.G * 255.)), 0, 255);
+    const auto B = std::clamp(static_cast<int>(std::round(colour.B * 255.)), 0, 255);
+    return std::to_string(R) + " " + std::to_string(G) + " " + std::to_string(B);
+}
