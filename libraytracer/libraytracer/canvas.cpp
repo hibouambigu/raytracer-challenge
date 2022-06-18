@@ -19,9 +19,10 @@ size_t Canvas::getHeight()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void Canvas::writePixel(size_t x, size_t y, Colour& colour)
+void Canvas::writePixel(size_t x, size_t y, Colour colour)
 {
-    pixels.set(x, y, colour);
+    if (x <= pixels.getWidth()-1 && y <= pixels.getHeight()-1)
+        pixels.set(x, y, colour);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +47,7 @@ std::string Canvas::generatePPMHeader() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-std::string Canvas::toPPM()
+std::string Canvas::toPPM() const
 {
     std::string ppm{};
     for (size_t y{}; y < pixels.getHeight(); y++)
@@ -55,7 +56,7 @@ std::string Canvas::toPPM()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-std::string Canvas::generatePPMDataRow(size_t y)
+std::string Canvas::generatePPMDataRow(size_t y) const
 {
     constexpr size_t CHAR_LIMIT{ 70 };  // PPM image format specification for length of lines
     std::string rowData{};
@@ -93,7 +94,15 @@ bool Canvas::writePPMToFile() const
     else
     {
         ppmFile << generatePPMHeader();
+        ppmFile << toPPM();
+        ppmFile << "\n";
         ppmFile.close();
     }
     return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void Canvas::setAllPixelsTo(Colour colour)
+{
+    pixels.setAllElementsTo(colour);
 }

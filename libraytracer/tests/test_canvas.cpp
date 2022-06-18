@@ -68,13 +68,7 @@ TEST_F(CanvasToPPM, IsNotLongerThan70Chars)
     // canvas to PPM splits long lines (>70 chars) into multiple rows
     Canvas canvas2 = Canvas(10, 2);
     Colour c2 = Colour{1., .25, .6};
-    for (size_t i{}; i < canvas2.getWidth(); i++)
-    {
-        for (size_t j{}; j < canvas2.getHeight(); j++)
-        {
-            canvas2.writePixel(i, j, c2);
-        }
-    }
+    canvas2.setAllPixelsTo(c2);
     const auto ppm = canvas2.toPPM();
     const char* expected =
         "255 64 153 255 64 153 255 64 153 255 64 153 255 64 153 255 64 153 255\n"
@@ -82,17 +76,6 @@ TEST_F(CanvasToPPM, IsNotLongerThan70Chars)
         "255 64 153 255 64 153 255 64 153 255 64 153 255 64 153 255 64 153 255\n"
         "64 153 255 64 153 255 64 153 255 64 153\n";
     EXPECT_EQ(ppm, expected);
-}
-
-TEST_F(CanvasToPPM, GeneratesPPMPixelData)
-{
-    // canvas can generate the pixel data in PPM format
-//    auto ppm = canvas.generatePPMData();
-//    const char* expected =
-//        "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-//        "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0"
-//        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255";
-//    EXPECT_EQ(ppm, expected);
 }
 
 TEST_F(CanvasToPPM, PPMFileIsWritten)

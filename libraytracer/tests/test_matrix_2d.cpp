@@ -59,3 +59,12 @@ TEST_F(Matrix2DBasics, GetRawMatrixData)
     pixels.set(7, 15, c2);
     EXPECT_EQ(pixels.get(7, 15), c2);
 }
+
+TEST_F(Matrix2DBasics, SetAllElementsToSomeValue)
+{
+    // setting all elements of the matrix to some value
+    auto c = Colour{.5f, .2f, .75f};
+    pixels.setAllElementsTo(c);
+    EXPECT_EQ(pixels.get(0, 0), c);
+    EXPECT_EQ(pixels.get(pixels.getWidth()-1, pixels.getHeight()-1), c);
+}

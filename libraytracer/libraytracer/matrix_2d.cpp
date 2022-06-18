@@ -5,13 +5,12 @@ template <typename T>
 Matrix2D<T>::Matrix2D(size_t width, size_t height)
 : width(width), height(height)
 {
-    auto row = std::vector<T>(height, T{});
-    matrix.resize(width, row);
+    setAllElementsTo(T{});
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-size_t Matrix2D<T>::getWidth()
+size_t Matrix2D<T>::getWidth() const
 {
     return width;
 }
@@ -19,7 +18,7 @@ size_t Matrix2D<T>::getWidth()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-T Matrix2D<T>::get(size_t x, size_t y)
+T Matrix2D<T>::get(size_t x, size_t y) const
 {
     return matrix[x][y];
 }
@@ -33,7 +32,7 @@ void Matrix2D<T>::set(size_t x, size_t y, T value)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-size_t Matrix2D<T>::getHeight()
+size_t Matrix2D<T>::getHeight() const
 {
     return height;
 }
@@ -60,6 +59,14 @@ template <typename T>
 std::vector<T> Matrix2D<T>::getCol(size_t x) const
 {
     return matrix[x];
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+void Matrix2D<T>::setAllElementsTo(T value)
+{
+    matrix.clear();
+    matrix.resize(width, std::vector<T>(height, value));
 }
 
 
