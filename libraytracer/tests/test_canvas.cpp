@@ -2,6 +2,10 @@
 #include <canvas.h>
 #include <string>
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Basic Canvas Operations
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class CanvasBasics : public ::testing::Test
 {
   protected:
@@ -22,33 +26,76 @@ TEST_F(CanvasBasics, WritePixels)
     EXPECT_EQ(c.pixelAt(2, 3), red);
 }
 
-TEST_F(CanvasBasics, GeneratesPPMHeader)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Portable PixMap (PPM) Image Formatting Tests
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CanvasToPPM : public ::testing::Test
+{
+  protected:
+    Canvas canvas = Canvas(5, 3);
+    Colour c1 = Colour{ 1.5, 0., 0. };
+    Colour c2 = Colour{ 0., .5, 0. };
+    Colour c3 = Colour{ -.5, 0., 1. };
+
+  public:
+    void SetUp() override
+    {
+        canvas.writePixel(0, 0, c1);
+        canvas.writePixel(2, 1, c2);
+        canvas.writePixel(4, 2, c3);
+    }
+};
+
+TEST_F(CanvasToPPM, GeneratesPPMHeader)
 {
     // canvas can construct a PPM format header
-    auto c = Canvas(5, 3);
-    auto ppm = c.generatePPMHeader();
-    EXPECT_EQ(ppm, "P3\n5 3\n255\n");
+    auto header = canvas.generatePPMHeader();
+    EXPECT_EQ(header, "P3\n5 3\n255\n");
 }
 
-TEST_F(CanvasBasics, GeneratesPPMPixelData)
+TEST_F(CanvasToPPM, GeneratesPPMRowData)
 {
-    // canvas can generate the pixel data in PPM format
-    auto canvas = Canvas(5, 3);
-    auto c1 = Colour{ 1.5, 0., 0. };
-    auto c2 = Colour{ 0., .5, 0. };
-    auto c3 = Colour{ -.5, 0., 1. };
-    canvas.writePixel(0, 0, c1);
-    canvas.writePixel(2, 1, c2);
-    canvas.writePixel(4, 2, c3);
-    auto ppm = c.generatePPMData();
+    auto row = canvas.generatePPMDataRow(0);
     const char* expected =
-        "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-        "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0"
-        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255";
+        "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n";
+    EXPECT_EQ(row, expected);
+}
+
+TEST_F(CanvasToPPM, IsNotLongerThan70Chars)
+{
+    // canvas to PPM splits long lines (>70 chars) into multiple rows
+    Canvas canvas2 = Canvas(10, 2);
+    Colour c2 = Colour{1., .25, .6};
+    for (size_t i{}; i < canvas2.getWidth(); i++)
+    {
+        for (size_t j{}; j < canvas2.getHeight(); j++)
+        {
+            canvas2.writePixel(i, j, c2);
+        }
+    }
+    const auto ppm = canvas2.toPPM();
+    const char* expected =
+        "255 64 153 255 64 153 255 64 153 255 64 153 255 64 153 255 64 153 255\n"
+        "64 153 255 64 153 255 64 153 255 64 153\n"
+        "255 64 153 255 64 153 255 64 153 255 64 153 255 64 153 255 64 153 255\n"
+        "64 153 255 64 153 255 64 153 255 64 153\n";
     EXPECT_EQ(ppm, expected);
 }
 
-TEST_F(CanvasBasics, PPMFileIsWritten)
+TEST_F(CanvasToPPM, GeneratesPPMPixelData)
+{
+    // canvas can generate the pixel data in PPM format
+//    auto ppm = canvas.generatePPMData();
+//    const char* expected =
+//        "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
+//        "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0"
+//        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255";
+//    EXPECT_EQ(ppm, expected);
+}
+
+TEST_F(CanvasToPPM, PPMFileIsWritten)
 {
     // writing to PPM file is a success
     auto c = Canvas(5, 3);

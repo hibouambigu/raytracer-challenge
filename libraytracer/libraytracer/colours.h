@@ -31,6 +31,8 @@ struct Colour
 
     /// Colour() to PPM 8bit format pixel data
     static std::string toPPM8b(const Colour& colour);
+    /// Convert R, G or B value to a PPM clamped bit integer
+    static unsigned int rgbToPPM(const double rgb, const unsigned int maxVal=255);
 
     double R, G, B;
 };

@@ -15,6 +15,7 @@ class Matrix2D
     T get(size_t x, size_t y);
     void set(size_t x, size_t y, T value);
     const std::vector<std::vector<T>>& getMatrix() const;
+    std::vector<T> getCol(size_t x) const;
 
   private:
     size_t width, height;

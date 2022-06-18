@@ -37,8 +37,17 @@ bool operator==(const Colour& a, const Colour& b)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 std::ostream& operator<<(std::ostream& os, const Colour& c)
 {
-    os << c.R << "r " << c.G << "g " << c.B << "b\n";
+    os << c.R << "r " << c.G << "g " << c.B << "b";
     return os;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+unsigned int Colour::rgbToPPM(const double rgb, const unsigned int maxVal)
+{
+    return static_cast<unsigned int>(
+        std::clamp(static_cast<int>(
+            std::round(rgb * static_cast<int>(maxVal))), 0, static_cast<int>(maxVal))
+    );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

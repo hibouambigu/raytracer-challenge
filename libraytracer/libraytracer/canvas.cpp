@@ -46,18 +46,43 @@ std::string Canvas::generatePPMHeader() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-std::string Canvas::generatePPMData()
+std::string Canvas::toPPM()
 {
-    const char* expected =
-        "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-        "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0"
-        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255";
-//    for (const auto& row: pixels.getMatrix())
-//        for (const auto& pix: row)
-//        {
-//            std::cout << pix.R << "/" << pix.G << "/" << pix.B << "\n";
-//        }
-    return expected;
+    std::string ppm{};
+    for (size_t y{}; y < pixels.getHeight(); y++)
+        ppm += generatePPMDataRow(y);
+    return ppm;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+std::string Canvas::generatePPMDataRow(size_t y)
+{
+    constexpr size_t CHAR_LIMIT{ 70 };  // PPM image format specification for length of lines
+    std::string rowData{};
+    size_t nChars{};
+    for (size_t x{}; x < pixels.getWidth(); x++)
+    {
+        auto const pixel = pixels.get(x, y);
+        std::vector<std::string> rgb;
+        rgb.push_back(std::to_string(Colour::rgbToPPM(pixel.R)));
+        rgb.push_back(std::to_string(Colour::rgbToPPM(pixel.G)));
+        rgb.push_back(std::to_string(Colour::rgbToPPM(pixel.B)));
+        for (const auto& p: rgb)
+        {
+            if ((nChars + p.length()+1) > CHAR_LIMIT)
+            {
+                rowData.replace(rowData.size()-1, 1, "\n");
+                nChars = p.length() + 1;
+            }
+            else
+            {
+                nChars += p.length()+1;
+            }
+            rowData += p + " ";
+        }
+    }
+    rowData.replace(rowData.size()-1, 1, "\n");
+    return rowData;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

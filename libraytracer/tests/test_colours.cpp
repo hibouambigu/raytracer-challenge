@@ -58,3 +58,17 @@ TEST_F(BasicColours, PPM8BitIsClampedTo255)
     auto res = Colour::toPPM8b(c);
     EXPECT_EQ(expected, res);
 }
+
+TEST_F(BasicColours, RGBToPPMInt)
+{
+    // rgb to ppm integer conversion
+    auto c = Colour{ 2.0, -2.0, .2 };
+//    static unsigned int rgbToPPM(const double rgb, const unsigned int maxVal=255);
+    auto r = Colour::rgbToPPM(c.R);
+    auto g = Colour::rgbToPPM(c.G);
+    auto b = Colour::rgbToPPM(c.B);
+    EXPECT_EQ(r, 255);
+    EXPECT_EQ(g, 0);
+    EXPECT_EQ(b, 51);
+}
+
