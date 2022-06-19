@@ -25,6 +25,32 @@ class MatrixBasics : public ::testing::Test
             {1., -2.}
         }
     });
+    Matrix<double, 4> A = Matrix<double, 4> ({
+         {
+             { 1., 2., 3., 4. },
+             { 5., 6., 7., 8. },
+             { 9., 8., 7., 6. },
+             { 5., 4., 3., 2. }
+        }
+    });
+
+    Matrix<double, 4> B = Matrix<double, 4> ({
+         {
+             { 1., 2., 3., 4. },
+             { 5., 6., 7., 8. },
+             { 9., 8., 7., 6. },
+             { 5., 4., 3., 2. }
+        }
+    });
+
+    Matrix<double, 4> C = Matrix<double, 4> ({
+         {
+             { 2., 3., 4., 5. },
+             { 6., 7., 8., 9. },
+             { 8., 7., 6., 5. },
+             { 4., 3., 2., 1. }
+        }
+    });
 };
 
 TEST_F(MatrixBasics, Matrix4x4IsConstructed)
@@ -52,3 +78,14 @@ TEST_F(MatrixBasics, Matrix2x2IsConstructed)
     EXPECT_DOUBLE_EQ(M2(1, 0), 1.);
     EXPECT_DOUBLE_EQ(M2(1, 1), -2.);
 }
+
+TEST_F(MatrixBasics, MatrixEqualityIdenticalIsTrue)
+{
+    EXPECT_EQ(A, B);
+}
+
+TEST_F(MatrixBasics, MatrixEqualityDifferentIsFalse)
+{
+//    EXPECT_NE(A, C);
+}
+

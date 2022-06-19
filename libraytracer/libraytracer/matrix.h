@@ -20,6 +20,14 @@ class Matrix
     size_t getSize() const;
     T& operator()(size_t row, size_t col);
     T operator()(size_t row, size_t col) const;
+    /// Equality of matrices
+    friend bool operator==(const Matrix<T, N>& a, const Matrix<T, N>& b) {
+        for (size_t row{}; row < a.getSize(); row++) {
+            for (size_t col{}; col < a.getSize(); col++)
+                if (a(row, col) != b(row, col)) return false;
+        }
+        return true;
+    };
 
   private:
     std::array<std::array<T, N>, N> M{};
@@ -52,4 +60,3 @@ T Matrix<T, N>::operator()(size_t row, size_t col) const
 {
     return M[row][col];
 }
-
