@@ -21,6 +21,10 @@ struct Tuple
     static double dot(const Tuple& a, const Tuple& b);
     bool isPoint() const;
     bool isVector() const;
+    /// Mimics array indexing. Hacky. Should refactor tuple internals eventually.
+    double& operator()(size_t i);
+    /// Mimics array indexing. Hacky. Should refactor tuple internals eventually.
+    double operator()(size_t i) const;
 
     double x, y, z, w;
 };

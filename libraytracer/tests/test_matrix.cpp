@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
-#include <matrix.h>
+#include "matrix.h"
+#include "tuples.h"
 
 class MatrixBasics : public ::testing::Test
 {
@@ -86,6 +87,47 @@ TEST_F(MatrixBasics, MatrixEqualityIdenticalIsTrue)
 
 TEST_F(MatrixBasics, MatrixEqualityDifferentIsFalse)
 {
-//    EXPECT_NE(A, C);
+    EXPECT_NE(A, C);
 }
+
+TEST_F(MatrixBasics, MatrixMultiplication)
+{
+    auto B = Matrix<double, 4> ({
+        {
+            { -2., 1., 2., 3. },
+            { 3., 2., 1., -1. },
+            { 4., 3., 6., 5. },
+            { 1., 2., 7., 8. }
+        }
+    });
+
+    auto expected = Matrix<double, 4> ({
+        {
+            { 20., 22., 50., 48. },
+            { 44., 54., 114., 108. },
+            { 40., 58., 110., 102. },
+            { 16., 26., 46., 42. }
+        }
+    });
+
+    EXPECT_EQ(A * B, expected);
+}
+
+TEST_F(MatrixBasics, Matrix4x4MultipliedByTuple)
+{
+    auto A = Matrix<double, 4> ({
+        {
+            { 1., 2., 3., 4. },
+            { 2., 4., 4., 2 },
+            { 8., 6., 4., 1. },
+            { 0., 0., 0., 1. }
+        }
+    });
+    auto b = Tuple{1., 2., 3., 1.};
+    auto expected = Tuple{ 18., 24., 33., 1. };
+    auto res = Linear::mult(A, b);
+    EXPECT_EQ(res, expected);
+}
+
+
 

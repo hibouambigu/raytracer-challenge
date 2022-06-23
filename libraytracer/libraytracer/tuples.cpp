@@ -61,7 +61,7 @@ double Tuple::dot(const Tuple& a, const Tuple& b)
 bool Tuple::isPoint() const { return w == 1.0; };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Tuple::isVector() const { return w == 0.0; };
+bool Tuple::isVector() const { return w == 0.0; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Tuple cross(const Tuple& a, const Tuple& b)
@@ -73,3 +73,36 @@ Tuple cross(const Tuple& a, const Tuple& b)
     );
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+double& Tuple::operator()(size_t i)
+{
+    switch(i) {
+    case 0:
+        return x;
+    case 1:
+        return y;
+    case 2:
+        return z;
+    case 3:
+        return w;
+    default:
+        return x;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+double Tuple::operator()(size_t i) const
+{
+    switch(i) {
+    case 0:
+        return x;
+    case 1:
+        return y;
+    case 2:
+        return z;
+    case 3:
+        return w;
+    default:
+        return x;
+    }
+}
