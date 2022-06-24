@@ -23,6 +23,10 @@ class Matrix
     T operator()(size_t row, size_t col) const;
     /// Construct an identity matrix of the given matrix size.
     static Matrix<T, N> identity();
+    /// Transposed version of this matrix. Returns a new, transposed matrix.
+    Matrix<T, N> transposed();
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /// Equality of matrices
     friend bool operator==(const Matrix<T, N>& a, const Matrix<T, N>& b) {
@@ -46,7 +50,6 @@ class Matrix
         }
         return X;
     };
-
 
   private:
     std::array<std::array<T, N>, N> M{};
@@ -90,6 +93,18 @@ Matrix<T, N> Matrix<T, N>::identity()
     return M;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T, size_t N>
+Matrix<T, N> Matrix<T, N>::transposed()
+{
+    Matrix<T, N> t{};
+    for (size_t row{}; row < M.size(); row++) {
+        for (size_t col{}; col < M.size(); col++) {
+           t(col, row) = M[row][col];
+        }
+    }
+    return t;
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

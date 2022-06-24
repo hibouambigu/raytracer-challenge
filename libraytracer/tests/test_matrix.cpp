@@ -133,7 +133,23 @@ TEST_F(MatrixBasics, Matrix4x4MultipliedByTuple)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-TEST(MatrixAdvanced, IdentityMatrix)
+
+class MatrixAdvanced : public ::testing::Test
+{
+  protected:
+
+    Matrix<double, 4> I4 = Matrix<double, 4> ({
+        {
+            {1., 0., 0., 0.},
+            {0., 1., 0., 0.},
+            {0., 0., 1., 0.},
+            {0., 0., 0., 1.},
+        }
+    });
+};
+
+
+TEST_F(MatrixAdvanced, IdentityMatrix)
 {
     auto I2 = Matrix<double, 2> ({
         {
@@ -162,6 +178,33 @@ TEST(MatrixAdvanced, IdentityMatrix)
     EXPECT_EQ(M2, I2);
     EXPECT_EQ(M3, I3);
     EXPECT_EQ(M4, I4);
+}
+
+TEST_F(MatrixAdvanced, TransposingMatrices)
+{
+    auto A = Matrix<double, 4>({
+        {
+            {0., 9., 3., 0.},
+            {9., 8., 0., 8.},
+            {1., 8., 5., 3.},
+            {0., 0., 5., 8.}
+        }
+    });
+    auto expected = Matrix<double, 4>({
+        {
+            {0., 9., 1., 0.},
+            {9., 8., 8., 0.},
+            {3., 0., 5., 5.},
+            {0., 8., 3., 8.}
+        }
+    });
+    EXPECT_EQ(A.transposed(), expected);
+}
+
+TEST_F(MatrixAdvanced, TransposingIdentityMatrix)
+{
+    // transposing the identity matrix *IS* the identity matrix
+    EXPECT_EQ(I4, I4.transposed());
 }
 
 
