@@ -2,6 +2,7 @@
 #include "matrix.h"
 #include "tuples.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
 class MatrixBasics : public ::testing::Test
 {
   protected:
@@ -53,6 +54,8 @@ class MatrixBasics : public ::testing::Test
         }
     });
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 TEST_F(MatrixBasics, Matrix4x4IsConstructed)
 {
@@ -127,6 +130,38 @@ TEST_F(MatrixBasics, Matrix4x4MultipliedByTuple)
     auto expected = Tuple{ 18., 24., 33., 1. };
     auto res = Linear::mult(A, b);
     EXPECT_EQ(res, expected);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+TEST(MatrixAdvanced, IdentityMatrix)
+{
+    auto I2 = Matrix<double, 2> ({
+        {
+            {1., 0.},
+            {0., 1.}
+        }
+    });
+    auto I3 = Matrix<double, 3> ({
+        {
+            {1., 0., 0.},
+            {0., 1., 0.},
+            {0., 0., 1.},
+        }
+    });
+    auto I4 = Matrix<double, 4> ({
+        {
+            {1., 0., 0., 0.},
+            {0., 1., 0., 0.},
+            {0., 0., 1., 0.},
+            {0., 0., 0., 1.},
+        }
+    });
+    auto M2 = Matrix<double, 2>::identity();
+    auto M3 = Matrix<double, 3>::identity();
+    auto M4 = Matrix<double, 4>::identity();
+    EXPECT_EQ(M2, I2);
+    EXPECT_EQ(M3, I3);
+    EXPECT_EQ(M4, I4);
 }
 
 

@@ -21,7 +21,9 @@ class Matrix
     [[nodiscard]] size_t getSize() const;
     T& operator()(size_t row, size_t col);
     T operator()(size_t row, size_t col) const;
-
+    /// Construct an identity matrix of the given matrix size.
+    static Matrix<T, N> identity();
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     /// Equality of matrices
     friend bool operator==(const Matrix<T, N>& a, const Matrix<T, N>& b) {
         for (size_t row{}; row < a.getSize(); row++) {
@@ -30,7 +32,7 @@ class Matrix
         }
         return true;
     };
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     /// Matrix multiplication
     friend Matrix<T, N> operator*(const Matrix<T, N>& A, const Matrix<T, N>& B) {
         auto X = Matrix<T, N>{};
@@ -44,6 +46,7 @@ class Matrix
         }
         return X;
     };
+
 
   private:
     std::array<std::array<T, N>, N> M{};
@@ -75,6 +78,16 @@ template <typename T, size_t N>
 T Matrix<T, N>::operator()(size_t row, size_t col) const
 {
     return M[row][col];
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T, size_t N>
+Matrix<T, N> Matrix<T, N>::identity()
+{
+    Matrix<T, N> M{};
+    for (size_t i{}; i < M.getSize(); i++)
+        M(i, i) = 1.;
+    return M;
 }
 
 
