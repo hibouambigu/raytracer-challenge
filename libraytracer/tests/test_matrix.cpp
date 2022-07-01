@@ -146,6 +146,13 @@ class MatrixAdvanced : public ::testing::Test
             {0., 0., 0., 1.},
         }
     });
+    Matrix<double, 3> A = Matrix<double, 3>({
+                      {
+                          {3., 5., 0.},
+                          {2., -1., -7.},
+                          {6., -1., 5.}
+        }
+    });
 };
 
 
@@ -263,17 +270,49 @@ TEST_F(MatrixAdvanced, MinorOf3x3Matrix)
 {
     // the minor of an element at i,j is
     // the det. of the submat at i,j
-    auto A = Matrix<double, 3>({
-        {
-            {3., 5., 0.},
-            {2., -1., -7.},
-            {6., -1., 5.}
-        }
-    });
     auto B = A.subMatrix(1, 0);
     EXPECT_DOUBLE_EQ(B.determinant(), 25.);
     EXPECT_DOUBLE_EQ(A.minor(1, 0), 25.);
 }
 
+TEST_F(MatrixAdvanced, CofactorOf3x3Matrix)
+{
+    EXPECT_DOUBLE_EQ(A.minor(0, 0), -12.);
+    EXPECT_DOUBLE_EQ(A.cofactor(0, 0), -12.);
+    EXPECT_DOUBLE_EQ(A.minor(1, 0), 25.);
+    EXPECT_DOUBLE_EQ(A.cofactor(1, 0), -25.);
+}
+
+TEST_F(MatrixAdvanced, Determinant3x3)
+{
+    auto D3 = Matrix<double, 3>({
+        {
+            {1., 2., 6.},
+            {-5., 8., -4.},
+            {2., 6., 4.}
+        }
+    });
+    EXPECT_DOUBLE_EQ(D3.cofactor(0, 0), 56.);
+    EXPECT_DOUBLE_EQ(D3.cofactor(0, 1), 12.);
+    EXPECT_DOUBLE_EQ(D3.cofactor(0, 2), -46.);
+    EXPECT_DOUBLE_EQ(D3.determinant(), -196.);
+}
+
+TEST_F(MatrixAdvanced, Determinant4x4)
+{
+    auto D4 = Matrix<double, 4>({
+        {
+            {-2., -8., 3., 5},
+            {-3., 1., 7., 3.},
+            {1., 2., -9., 6.},
+            {-6., 7., 7., -9.}
+        }
+    });
+    EXPECT_DOUBLE_EQ(D4.cofactor(0, 0), 690.);
+    EXPECT_DOUBLE_EQ(D4.cofactor(0, 1), 447.);
+    EXPECT_DOUBLE_EQ(D4.cofactor(0, 2), 210.);
+    EXPECT_DOUBLE_EQ(D4.cofactor(0, 3), 51.);
+    EXPECT_DOUBLE_EQ(D4.determinant(), -4071.);
+}
 
 

@@ -10,6 +10,8 @@
 #include <array>
 #include <vector>
 #include <cstddef>
+#include <iostream>
+
 #include "utils.h"
 #include "tuples.h"
 
@@ -33,6 +35,8 @@ class Matrix
     Matrix<T, N-1> subMatrix(size_t row, size_t col) const;
     /// Compute the minor of an element at row, col of this matrix.
     T minor(size_t row, size_t col) const;
+    /// Calculate the cofactor of this matrix at some element's row, col
+    T cofactor(size_t row, size_t col) const;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,10 +123,14 @@ Matrix<T, N> Matrix<T, N>::transposed() const
 template <typename T, size_t N>
 T Matrix<T, N>::determinant() const
 {
-    T det;
-    if (N == 2) {
+    T det{};
+    if constexpr (N == 2)
         det = M[0][0]*M[1][1] - M[0][1]*M[1][0];
+    else {
+        for (size_t col{}; col < M.size(); ++col)
+            det += M[0][col] * cofactor(0, col);
     }
+
     return det;
 }
 
@@ -158,6 +166,14 @@ template <typename T, size_t N>
 T Matrix<T, N>::minor(size_t row, size_t col) const
 {
     return subMatrix(row, col).determinant();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T, size_t N>
+T Matrix<T, N>::cofactor(size_t row, size_t col) const
+{
+    auto m = minor(row, col);
+    return (row + col) % 2 == 0 ? m : -m;
 }
 
 
