@@ -8,6 +8,7 @@
 #pragma once
 
 #include <array>
+#include <vector>
 #include "utils.h"
 #include "tuples.h"
 
@@ -24,7 +25,11 @@ class Matrix
     /// Construct an identity matrix of the given matrix size.
     static Matrix<T, N> identity();
     /// Transposed version of this matrix. Returns a new, transposed matrix.
-    Matrix<T, N> transposed();
+    Matrix<T, N> transposed() const;
+    /// Compute the determinant of this matrix.
+    T determinant() const;
+    /// Derive a submatrix from this matrix.
+    Matrix<T, N-1> subMatrix(size_t row, size_t col);
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +55,7 @@ class Matrix
         }
         return X;
     };
+
 
   private:
     std::array<std::array<T, N>, N> M{};
@@ -95,15 +101,49 @@ Matrix<T, N> Matrix<T, N>::identity()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T, size_t N>
-Matrix<T, N> Matrix<T, N>::transposed()
+Matrix<T, N> Matrix<T, N>::transposed() const
 {
     Matrix<T, N> t{};
-    for (size_t row{}; row < M.size(); row++) {
-        for (size_t col{}; col < M.size(); col++) {
+    for (size_t row{}; row < N; row++) {
+        for (size_t col{}; col < N; col++) {
            t(col, row) = M[row][col];
         }
     }
     return t;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T, size_t N>
+T Matrix<T, N>::determinant() const
+{
+    return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T, size_t N>
+Matrix<T, N-1> Matrix<T, N>::subMatrix(size_t row, size_t col)
+{
+    Matrix<T, N-1> sub{};
+    std::vector<std::vector<T>> toCopy{};
+    // make the toCopy vector from source matrix
+    for (size_t r{}; r < N; ++r) {
+        // make a new row vector
+        std::vector<T> rowVec{};
+        for (size_t c{}; c < N; ++c) {
+            if (r != row && c != col)
+                rowVec.push_back(M[r][c]);
+        }
+        // push it onto copy vector matrix if it belongs there
+        if (r != row)
+            toCopy.push_back(rowVec);
+    }
+    // now copy the vector into our new submatrix
+    for (size_t r{}; r < toCopy.size(); ++r) {
+        for (size_t c{}; c < toCopy.size(); ++c) {
+            sub(r, c) = toCopy[r][c];
+        }
+    }
+    return sub;
 }
 
 

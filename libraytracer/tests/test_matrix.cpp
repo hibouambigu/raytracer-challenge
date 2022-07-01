@@ -207,5 +207,57 @@ TEST_F(MatrixAdvanced, TransposingIdentityMatrix)
     EXPECT_EQ(I4, I4.transposed());
 }
 
+TEST_F(MatrixAdvanced, Determinant2x2)
+{
+    // calculating the determinant of 2x2 matrix
+    auto A = Matrix<double, 2>({
+        {
+            {1., 5.},
+            {-3., 2.}
+        }
+    });
+    EXPECT_EQ(A.determinant(), 17.);
+}
+
+TEST_F(MatrixAdvanced, SubmatrixOf3x3Is2x2)
+{
+    // the submat. of a 3x3 results in a 2x2 matrix
+    auto A = Matrix<double, 3>({
+        {
+            {1., 5., 0.},
+            {-3., 2., 7.},
+            {0., 6., -3.}
+        }
+    });
+    auto sub = Matrix<double, 2>({
+        {
+            {-3., 2.},
+            {0., 6.}
+        }
+    });
+    EXPECT_EQ(A.subMatrix(0, 2), sub);
+}
+
+TEST_F(MatrixAdvanced, SubmatrixOf4x4is3x3)
+{
+    // the submat. of a 4x4 results in a 3x3 matrix
+    auto A = Matrix<double, 4>({
+        {
+            {-6., 1., 1., 6.},
+            {-8., 5., 8., 6.},
+            {-1., 0., 8., 2.},
+            {-7., 1., -1., 1.}
+        }
+    });
+    auto sub = Matrix<double, 3>({
+        {
+            {-6., 1., 6.},
+            {-8., 8., 6.},
+            {-7., -1., 1.}
+        }
+    });
+    EXPECT_EQ(A.subMatrix(2, 1), sub);
+}
+
 
 
