@@ -9,6 +9,7 @@
 
 #include <array>
 #include <vector>
+#include <cstddef>
 #include "utils.h"
 #include "tuples.h"
 
@@ -28,8 +29,10 @@ class Matrix
     Matrix<T, N> transposed() const;
     /// Compute the determinant of this matrix.
     T determinant() const;
-    /// Derive a submatrix from this matrix.
-    Matrix<T, N-1> subMatrix(size_t row, size_t col);
+    /// Derive a sub-matrix from this matrix.
+    Matrix<T, N-1> subMatrix(size_t row, size_t col) const;
+    /// Compute the minor of an element at row, col of this matrix.
+    T minor(size_t row, size_t col) const;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,12 +119,16 @@ Matrix<T, N> Matrix<T, N>::transposed() const
 template <typename T, size_t N>
 T Matrix<T, N>::determinant() const
 {
-    return 0;
+    T det;
+    if (N == 2) {
+        det = M[0][0]*M[1][1] - M[0][1]*M[1][0];
+    }
+    return det;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T, size_t N>
-Matrix<T, N-1> Matrix<T, N>::subMatrix(size_t row, size_t col)
+Matrix<T, N-1> Matrix<T, N>::subMatrix(size_t row, size_t col) const
 {
     Matrix<T, N-1> sub{};
     std::vector<std::vector<T>> toCopy{};
@@ -144,6 +151,13 @@ Matrix<T, N-1> Matrix<T, N>::subMatrix(size_t row, size_t col)
         }
     }
     return sub;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T, size_t N>
+T Matrix<T, N>::minor(size_t row, size_t col) const
+{
+    return subMatrix(row, col).determinant();
 }
 
 

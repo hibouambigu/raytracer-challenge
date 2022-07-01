@@ -216,7 +216,7 @@ TEST_F(MatrixAdvanced, Determinant2x2)
             {-3., 2.}
         }
     });
-    EXPECT_EQ(A.determinant(), 17.);
+    EXPECT_DOUBLE_EQ(A.determinant(), 17.);
 }
 
 TEST_F(MatrixAdvanced, SubmatrixOf3x3Is2x2)
@@ -257,6 +257,22 @@ TEST_F(MatrixAdvanced, SubmatrixOf4x4is3x3)
         }
     });
     EXPECT_EQ(A.subMatrix(2, 1), sub);
+}
+
+TEST_F(MatrixAdvanced, MinorOf3x3Matrix)
+{
+    // the minor of an element at i,j is
+    // the det. of the submat at i,j
+    auto A = Matrix<double, 3>({
+        {
+            {3., 5., 0.},
+            {2., -1., -7.},
+            {6., -1., 5.}
+        }
+    });
+    auto B = A.subMatrix(1, 0);
+    EXPECT_DOUBLE_EQ(B.determinant(), 25.);
+    EXPECT_DOUBLE_EQ(A.minor(1, 0), 25.);
 }
 
 
