@@ -315,4 +315,32 @@ TEST_F(MatrixAdvanced, Determinant4x4)
     EXPECT_DOUBLE_EQ(D4.determinant(), -4071.);
 }
 
+TEST_F(MatrixAdvanced, InvertibleMatrixIsInvertible)
+{
+    auto A = Matrix<double, 4>({
+        {
+            {6., 4., 4., 4.},
+            {5., 5., 7., 6.},
+            {4., -9., 3., -7.},
+            {9., 1., 7., -6.,}
+        }
+    });
+    EXPECT_EQ(A.determinant(), -2120.);
+    EXPECT_TRUE(A.isInvertible());
+}
+
+TEST_F(MatrixAdvanced, NonInvertibleMatrixIsNotInvertible)
+{
+    auto A = Matrix<double, 4>({
+        {
+            {-4., 2., -2., -3.},
+            {9., 6., 2., 6.},
+            {0., -5., 1., -5.},
+            {0., 0., 0., 0.,}
+        }
+    });
+    EXPECT_EQ(A.determinant(), 0.);
+    EXPECT_FALSE(A.isInvertible());
+}
+
 

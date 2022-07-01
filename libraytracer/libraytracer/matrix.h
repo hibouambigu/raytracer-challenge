@@ -37,6 +37,8 @@ class Matrix
     T minor(size_t row, size_t col) const;
     /// Calculate the cofactor of this matrix at some element's row, col
     T cofactor(size_t row, size_t col) const;
+    /// True if this matrix can be inverted.
+    bool isInvertible() const;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,6 +176,13 @@ T Matrix<T, N>::cofactor(size_t row, size_t col) const
 {
     auto m = minor(row, col);
     return (row + col) % 2 == 0 ? m : -m;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T, size_t N>
+bool Matrix<T, N>::isInvertible() const
+{
+    return determinant() != 0;
 }
 
 
