@@ -448,7 +448,7 @@ class MatrixTransformations : public ::testing::Test
 TEST_F(MatrixTransformations, MultiplyingByTranslationMatrix)
 {
     // multiplying by a transformation matrix
-    auto transform = Linear::translation(5., -3., 2.);
+    auto transform = Transform::translation(5., -3., 2.);
     auto inv = transform.inverse();
     auto p = Point(-3., 4., 5.);
     EXPECT_EQ(Linear::mult(inv, p), Point(-8., 7., 3.));
@@ -457,10 +457,44 @@ TEST_F(MatrixTransformations, MultiplyingByTranslationMatrix)
 TEST_F(MatrixTransformations, TranslationDoesNotAffectVectors)
 {
     // translating does not affect vectors thanks to w = 0
-    auto transform = Linear::translation(5., -3., 2.);
+    auto transform = Transform::translation(5., -3., 2.);
     auto v = Vector(-3., 4., 5.);
     EXPECT_EQ(Linear::mult(transform, v), v);
 }
+
+
+TEST_F(MatrixTransformations, ScalingAppliedToPoint)
+{
+    auto transform = Transform::scale(2., 3., 4.);
+    auto p = Point(-4., 6., 8.);
+    EXPECT_EQ(Linear::mult(transform, p), Point(-8., 18., 32.));
+}
+
+TEST_F(MatrixTransformations, ScalingAppliedToVector)
+{
+    auto transform = Transform::scale(2., 3., 4.);
+    auto v = Vector(-4., 6., 8.);
+    EXPECT_EQ(Linear::mult(transform, v), Vector(-8., 18., 32.));
+}
+
+TEST_F(MatrixTransformations, InverseOfScalingIsOppositeEffect)
+{
+    auto transform = Transform::scale(2., 3., 4.);
+    auto inv = transform.inverse();
+    auto v = Vector(-4., 6., 8.);
+    EXPECT_EQ(Linear::mult(inv, v), Vector(-2., 2., 2.));
+}
+
+TEST_F(MatrixTransformations, ReflectionIsScalingByNegativeVal)
+{
+    auto transform = Transform::scale(-1., 1., 1.);
+    auto p = Point(2., 3., 4.);
+    EXPECT_EQ(Linear::mult(transform, p), Vector(-2., 3., 4.));
+}
+
+
+
+
 
 
 
