@@ -415,4 +415,54 @@ TEST_F(MatrixAdvanced, InverseOfThird4x4Matrix)
     EXPECT_EQ(B, inverse);
 }
 
+TEST_F(MatrixAdvanced, MultiplyingAProductByItsInverse)
+{
+    auto A = Matrix<double, 4>({
+        {
+            {3., -9., 7., 3.},
+            {3., -8., 2., -9.},
+            {-4., 4., 4., 1.},
+            {-6., 5., -1., 1.}
+        }
+    });
+    auto B = Matrix<double, 4>({
+        {
+            {8., 2., 2., 2.},
+            {3., -1., 7., 0.},
+            {7., 0., 5., 4.},
+            {6., -2., 0., 5.}
+        }
+    });
+    auto C = A * B;
+    EXPECT_EQ(C * B.inverse(), A);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class MatrixTransformations : public ::testing::Test
+{
+  protected:
+};
+
+TEST_F(MatrixTransformations, MultiplyingByTranslationMatrix)
+{
+    // multiplying by a transformation matrix
+    auto transform = Linear::translation(5., -3., 2.);
+    auto inv = transform.inverse();
+    auto p = Point(-3., 4., 5.);
+    EXPECT_EQ(Linear::mult(inv, p), Point(-8., 7., 3.));
+}
+
+TEST_F(MatrixTransformations, TranslationDoesNotAffectVectors)
+{
+    // translating does not affect vectors thanks to w = 0
+    auto transform = Linear::translation(5., -3., 2.);
+    auto v = Vector(-3., 4., 5.);
+    EXPECT_EQ(Linear::mult(transform, v), v);
+}
+
+
+
+
 

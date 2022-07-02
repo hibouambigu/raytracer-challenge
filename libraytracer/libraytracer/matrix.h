@@ -39,10 +39,9 @@ class Matrix
     /// Calculate the cofactor of this matrix at some element's row, col
     T cofactor(size_t row, size_t col) const;
     /// True if this matrix can be inverted.
-    bool isInvertible() const;
+    [[nodiscard]] bool isInvertible() const;
     /// Return the inverse of this matrix.
     Matrix<T, N> inverse() const;
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /// Equality of matrices
@@ -67,7 +66,6 @@ class Matrix
         }
         return X;
     };
-
 
   private:
     std::array<std::array<T, N>, N> M{};
@@ -203,7 +201,6 @@ Matrix<T, N> Matrix<T, N>::inverse() const
     return M2;
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Linear Algebra functions which don't (or can't) belong in any one class in particular
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -225,6 +222,19 @@ Tuple mult(const Matrix<T, 4>& M, const Tuple& t)
         }
     }
     return X;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Construct a 4x4 transformation matrix with the given x, y, z.
+template <typename T>
+Matrix<T, 4> translation(T x, T y, T z)
+{
+    auto translation = Matrix<T, 4>::identity();
+    translation(0, 3) = x;
+    translation(1, 3) = y;
+    translation(2, 3) = z;
+    return translation;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
