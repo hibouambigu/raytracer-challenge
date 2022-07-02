@@ -343,4 +343,76 @@ TEST_F(MatrixAdvanced, NonInvertibleMatrixIsNotInvertible)
     EXPECT_FALSE(A.isInvertible());
 }
 
+TEST_F(MatrixAdvanced, InverseOf4x4Matrix)
+{
+    // calculate the inverse of a 4x4 matrox
+    auto A = Matrix<double, 4>({
+        {
+            {-5., 2., 6., -8.},
+            {1., -5., 1., 8.},
+            {7., 7., -6., -7.},
+            {1., -3., 7., 4.,}
+        }
+    });
+    auto B = A.inverse();
+    EXPECT_DOUBLE_EQ(A.determinant(), 532.);
+    EXPECT_DOUBLE_EQ(A.cofactor(2, 3), -160.);
+    EXPECT_DOUBLE_EQ(B(3, 2), -160. / 532.);
+    EXPECT_DOUBLE_EQ(A.cofactor(3, 2), 105.);
+    EXPECT_DOUBLE_EQ(B(2, 3), 105. / 532.);
+    auto inverse = Matrix<double, 4>({
+        {
+            { .21805,   .45113,   .24060, -.04511},
+            {-.80827, -1.45677,  -.44361,  .52068},
+            {-.07895,  -.22368,  -.05263,  .19737},
+            {-.52256,  -.81391,  -.30075,  .30639}
+        }
+    });
+    EXPECT_EQ(B, inverse);
+}
+
+TEST_F(MatrixAdvanced, InverseOfAnother4x4)
+{
+    auto A = Matrix<double, 4>({
+        {
+            {8., -5., 9., 2.},
+            {7., 5., 6., 1.},
+            {-6., 0., 9., 6.},
+            {-3., 0., -9., -4.}
+        }
+    });
+    auto B = A.inverse();
+    auto inverse = Matrix<double, 4>({
+        {
+            {-.15385, -.15385, -.28205, -.53846},
+            {-.07692, .12308, .02564, .03077},
+            {.35897, .35897, .43590, .92308},
+            {-.69231, -.69231, -.76923, -1.92308}
+        }
+    });
+    EXPECT_EQ(B, inverse);
+}
+
+TEST_F(MatrixAdvanced, InverseOfThird4x4Matrix)
+{
+    auto A = Matrix<double, 4>({
+        {
+            {9., 3., 0., 9.},
+            {-5., -2., -6., -3.},
+            {-4., 9., 6., 4.},
+            {-7., 6., 6., 2.}
+        }
+    });
+    auto B = A.inverse();
+    auto inverse = Matrix<double, 4>({
+        {
+            {-.04074, -.07778, 0.14444, -0.22222},
+            {-.07778, .03333, .36667, -.33333},
+            {-.02901, -.14630, -.10926, .12963},
+            {.17778, .06667, -.26667, .33333}
+        }
+    });
+    EXPECT_EQ(B, inverse);
+}
+
 

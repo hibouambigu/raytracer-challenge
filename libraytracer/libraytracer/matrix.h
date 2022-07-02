@@ -11,6 +11,7 @@
 #include <vector>
 #include <cstddef>
 #include <iostream>
+#include <stdexcept>
 
 #include "utils.h"
 #include "tuples.h"
@@ -39,6 +40,8 @@ class Matrix
     T cofactor(size_t row, size_t col) const;
     /// True if this matrix can be inverted.
     bool isInvertible() const;
+    /// Return the inverse of this matrix.
+    Matrix<T, N> inverse() const;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +49,7 @@ class Matrix
     friend bool operator==(const Matrix<T, N>& a, const Matrix<T, N>& b) {
         for (size_t row{}; row < a.getSize(); row++) {
             for (size_t col{}; col < a.getSize(); col++)
-                if (a(row, col) != b(row, col)) return false;
+                if ( !APPROX_EQ(a(row, col), b(row, col)) ) return false;
         }
         return true;
     };
@@ -183,6 +186,21 @@ template <typename T, size_t N>
 bool Matrix<T, N>::isInvertible() const
 {
     return determinant() != 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T, size_t N>
+Matrix<T, N> Matrix<T, N>::inverse() const
+{
+    if (!isInvertible()) throw std::runtime_error("Matrix is not invertible.");
+    auto M2 = Matrix<T, N>{};
+    for (size_t row{}; row < N; ++row) {
+        for (size_t col{}; col < N; ++col) {
+            auto c = cofactor(row, col);
+            M2(col, row) = c / determinant();
+        }
+    }
+    return M2;
 }
 
 
