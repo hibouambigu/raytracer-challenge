@@ -489,9 +489,43 @@ TEST_F(MatrixTransformations, ReflectionIsScalingByNegativeVal)
 {
     auto transform = Transform::scale(-1., 1., 1.);
     auto p = Point(2., 3., 4.);
-    EXPECT_EQ(Linear::mult(transform, p), Vector(-2., 3., 4.));
+    EXPECT_EQ(Linear::mult(transform, p), Point(-2., 3., 4.));
 }
 
+TEST_F(MatrixTransformations, RotatePointAroundX)
+{
+    auto p = Point(0., 1., 0.);
+    auto halfQuarter = Transform::rotateX(QUARTER_PI);
+    auto fullQuarter = Transform::rotateX(HALF_PI);
+    EXPECT_EQ(Linear::mult(halfQuarter, p), Point(0, SQRT_2/2., SQRT_2/2.));
+    EXPECT_EQ(Linear::mult(fullQuarter, p), Point(0., 0., 1.));
+}
+
+TEST_F(MatrixTransformations, InverseOfPointRotatingAroundX)
+{
+    auto p = Point(0., 1., 0.);
+    auto halfQuarter = Transform::rotateX(QUARTER_PI);
+    auto inv = halfQuarter.inverse();
+    EXPECT_EQ(Linear::mult(inv, p), Point(0, SQRT_2/2., -SQRT_2/2.));
+}
+
+TEST_F(MatrixTransformations, RotatePointAroundY)
+{
+    auto p = Point(0., 0., 1.);
+    auto halfQuarter = Transform::rotateY(QUARTER_PI);
+    auto fullQuarter = Transform::rotateY(HALF_PI);
+    EXPECT_EQ(Linear::mult(halfQuarter, p), Point(SQRT_2/2., 0., SQRT_2/2.));
+    EXPECT_EQ(Linear::mult(fullQuarter, p), Point(1., 0., 0.));
+}
+
+TEST_F(MatrixTransformations, RotatePointAroundZ)
+{
+    auto p = Point(0., 1., 0.);
+    auto halfQuarter = Transform::rotateZ(QUARTER_PI);
+    auto fullQuarter = Transform::rotateZ(HALF_PI);
+    EXPECT_EQ(Linear::mult(halfQuarter, p), Point(-SQRT_2/2., SQRT_2/2., 0.));
+    EXPECT_EQ(Linear::mult(fullQuarter, p), Point(-1., 0., 0.));
+}
 
 
 

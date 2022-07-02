@@ -12,6 +12,8 @@
 #include <cstddef>
 #include <iostream>
 #include <stdexcept>
+#include <cmath>
+#include <numbers>
 
 #include "utils.h"
 #include "tuples.h"
@@ -229,12 +231,50 @@ Matrix<T, 4> scale(T x, T y, T z)
     return scaling;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Construct a transformation matrix to rotate around the X-axis.
+template <typename T=double>
+Matrix<T, 4> rotateX(double angle)
+{
+    auto rotate = Matrix<T, 4>::identity();
+    rotate(1, 1) = std::cos(angle);
+    rotate(1, 2) = -std::sin(angle);
+    rotate(2, 1) = std::sin(angle);
+    rotate(2, 2) = std::cos(angle);
+    return rotate;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Construct a transformation matrix to rotate around the Y-axis.
+template <typename T=double>
+Matrix<T, 4> rotateY(double angle)
+{
+    auto rotate = Matrix<T, 4>::identity();
+    rotate(0, 0) = std::cos(angle);
+    rotate(0, 2) = std::sin(angle);
+    rotate(2, 0) = -std::sin(angle);
+    rotate(2, 2) = std::cos(angle);
+    return rotate;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Construct a transformation matrix to rotate around the Z-axis.
+template <typename T=double>
+Matrix<T, 4> rotateZ(double angle)
+{
+    auto rotate = Matrix<T, 4>::identity();
+    rotate(0, 0) = std::cos(angle);
+    rotate(0, 1) = -std::sin(angle);
+    rotate(1, 0) = std::sin(angle);
+    rotate(1, 1) = std::cos(angle);
+    return rotate;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 } // END namespace Transform
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Linear Algebra functions which don't (or can't) belong in any one class in particular
 //////////////////////////////////////////////////////////////////////////////////////////////////////
