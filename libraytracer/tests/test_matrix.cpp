@@ -569,10 +569,27 @@ TEST_F(MatrixTransformations, ShearZProportionateToY)
     EXPECT_EQ(Linear::mult(shear, p), Point(2., 3., 7.));
 }
 
+TEST_F(MatrixTransformations, TransformationsAppliedInSequence)
+{
+    auto p = Point(1., 0., 1.);
+    auto A = Transform::rotateX(HALF_PI);
+    auto B = Transform::scale(5., 5., 5.);
+    auto C = Transform::translation(10., 5., 7.);
+    auto p2 = Linear::mult(A, p);
+    EXPECT_EQ(p2, Point(1., -1., 0.));
+    auto p3 = Linear::mult(B, p2);
+    EXPECT_EQ(p3, Point(5., -5., 0.));
+    auto p4 = Linear::mult(C, p3);
+    EXPECT_EQ(p4, Point(15., 0., 7.));
+}
 
-
-
-
-
-
-
+TEST_F(MatrixTransformations, ChainingTransformationsAndApplying)
+{
+    // chained transformations must be applied in reverse order
+    auto p = Point(1., 0., 1.);
+    auto A = Transform::rotateX(HALF_PI);
+    auto B = Transform::scale(5., 5., 5.);
+    auto C = Transform::translation(10., 5., 7.);
+    auto T = C * B * A;
+    EXPECT_EQ(Linear::mult(T, p), Point(15., 0., 7.));
+}
