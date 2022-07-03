@@ -68,6 +68,20 @@ class Matrix
         }
         return X;
     };
+    /// Multiply this 4x4 matrix with a tuple (Point() or Vector()).
+    Tuple operator*(const Tuple& t) {
+        auto X = Tuple{};
+        constexpr auto SIZE{4};
+        for(size_t row{}; row < SIZE; row++) {
+            for (size_t col{}; col < SIZE; col++) {
+                T element{};
+                for (size_t i{}; i < SIZE; i++)
+                    element += M[row][i] * t(i);
+                X(row) = element;
+            }
+        }
+        return X;
+    };
 
   private:
     std::array<std::array<T, N>, N> M{};
@@ -294,27 +308,6 @@ Matrix<T, 4> shear(T xY, T xZ, T yX, T yZ, T zX, T zY)
 /// Linear Algebra functions which don't (or can't) belong in any one class in particular
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 namespace Linear {
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-/// @brief Multiply a 4x4 matrix with a Tuple()
-template <typename T>
-Tuple mult(const Matrix<T, 4>& M, const Tuple& t)
-{
-    auto X = Tuple{};
-    constexpr auto SIZE{4};
-    for(size_t row{}; row < SIZE; row++) {
-        for (size_t col{}; col < SIZE; col++) {
-            T element{};
-            for (size_t i{}; i < SIZE; i++)
-                element += M(row, i) * t(i);
-            X(row) = element;
-        }
-    }
-    return X;
-}
-
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 } // END namespace Linear

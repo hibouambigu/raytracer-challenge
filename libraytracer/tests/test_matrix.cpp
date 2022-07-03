@@ -128,7 +128,7 @@ TEST_F(MatrixBasics, Matrix4x4MultipliedByTuple)
     });
     auto b = Tuple{1., 2., 3., 1.};
     auto expected = Tuple{ 18., 24., 33., 1. };
-    auto res = Linear::mult(A, b);
+    auto res = A * b;
     EXPECT_EQ(res, expected);
 }
 
@@ -451,7 +451,7 @@ TEST_F(MatrixTransformations, MultiplyingByTranslationMatrix)
     auto transform = Transform::translation(5., -3., 2.);
     auto inv = transform.inverse();
     auto p = Point(-3., 4., 5.);
-    EXPECT_EQ(Linear::mult(inv, p), Point(-8., 7., 3.));
+    EXPECT_EQ(inv * p, Point(-8., 7., 3.));
 }
 
 TEST_F(MatrixTransformations, TranslationDoesNotAffectVectors)
@@ -459,7 +459,7 @@ TEST_F(MatrixTransformations, TranslationDoesNotAffectVectors)
     // translating does not affect vectors thanks to w = 0
     auto transform = Transform::translation(5., -3., 2.);
     auto v = Vector(-3., 4., 5.);
-    EXPECT_EQ(Linear::mult(transform, v), v);
+    EXPECT_EQ(transform * v, v);
 }
 
 
@@ -467,14 +467,14 @@ TEST_F(MatrixTransformations, ScalingAppliedToPoint)
 {
     auto transform = Transform::scale(2., 3., 4.);
     auto p = Point(-4., 6., 8.);
-    EXPECT_EQ(Linear::mult(transform, p), Point(-8., 18., 32.));
+    EXPECT_EQ(transform * p, Point(-8., 18., 32.));
 }
 
 TEST_F(MatrixTransformations, ScalingAppliedToVector)
 {
     auto transform = Transform::scale(2., 3., 4.);
     auto v = Vector(-4., 6., 8.);
-    EXPECT_EQ(Linear::mult(transform, v), Vector(-8., 18., 32.));
+    EXPECT_EQ(transform * v, Vector(-8., 18., 32.));
 }
 
 TEST_F(MatrixTransformations, InverseOfScalingIsOppositeEffect)
@@ -482,14 +482,14 @@ TEST_F(MatrixTransformations, InverseOfScalingIsOppositeEffect)
     auto transform = Transform::scale(2., 3., 4.);
     auto inv = transform.inverse();
     auto v = Vector(-4., 6., 8.);
-    EXPECT_EQ(Linear::mult(inv, v), Vector(-2., 2., 2.));
+    EXPECT_EQ(inv * v, Vector(-2., 2., 2.));
 }
 
 TEST_F(MatrixTransformations, ReflectionIsScalingByNegativeVal)
 {
     auto transform = Transform::scale(-1., 1., 1.);
     auto p = Point(2., 3., 4.);
-    EXPECT_EQ(Linear::mult(transform, p), Point(-2., 3., 4.));
+    EXPECT_EQ(transform * p, Point(-2., 3., 4.));
 }
 
 TEST_F(MatrixTransformations, RotatePointAroundX)
@@ -497,8 +497,8 @@ TEST_F(MatrixTransformations, RotatePointAroundX)
     auto p = Point(0., 1., 0.);
     auto halfQuarter = Transform::rotateX(QUARTER_PI);
     auto fullQuarter = Transform::rotateX(HALF_PI);
-    EXPECT_EQ(Linear::mult(halfQuarter, p), Point(0, SQRT_2/2., SQRT_2/2.));
-    EXPECT_EQ(Linear::mult(fullQuarter, p), Point(0., 0., 1.));
+    EXPECT_EQ(halfQuarter * p, Point(0, SQRT_2/2., SQRT_2/2.));
+    EXPECT_EQ(fullQuarter * p, Point(0., 0., 1.));
 }
 
 TEST_F(MatrixTransformations, InverseOfPointRotatingAroundX)
@@ -506,7 +506,7 @@ TEST_F(MatrixTransformations, InverseOfPointRotatingAroundX)
     auto p = Point(0., 1., 0.);
     auto halfQuarter = Transform::rotateX(QUARTER_PI);
     auto inv = halfQuarter.inverse();
-    EXPECT_EQ(Linear::mult(inv, p), Point(0, SQRT_2/2., -SQRT_2/2.));
+    EXPECT_EQ(inv * p, Point(0, SQRT_2/2., -SQRT_2/2.));
 }
 
 TEST_F(MatrixTransformations, RotatePointAroundY)
@@ -514,8 +514,8 @@ TEST_F(MatrixTransformations, RotatePointAroundY)
     auto p = Point(0., 0., 1.);
     auto halfQuarter = Transform::rotateY(QUARTER_PI);
     auto fullQuarter = Transform::rotateY(HALF_PI);
-    EXPECT_EQ(Linear::mult(halfQuarter, p), Point(SQRT_2/2., 0., SQRT_2/2.));
-    EXPECT_EQ(Linear::mult(fullQuarter, p), Point(1., 0., 0.));
+    EXPECT_EQ(halfQuarter * p, Point(SQRT_2/2., 0., SQRT_2/2.));
+    EXPECT_EQ(fullQuarter * p, Point(1., 0., 0.));
 }
 
 TEST_F(MatrixTransformations, RotatePointAroundZ)
@@ -523,50 +523,50 @@ TEST_F(MatrixTransformations, RotatePointAroundZ)
     auto p = Point(0., 1., 0.);
     auto halfQuarter = Transform::rotateZ(QUARTER_PI);
     auto fullQuarter = Transform::rotateZ(HALF_PI);
-    EXPECT_EQ(Linear::mult(halfQuarter, p), Point(-SQRT_2/2., SQRT_2/2., 0.));
-    EXPECT_EQ(Linear::mult(fullQuarter, p), Point(-1., 0., 0.));
+    EXPECT_EQ(halfQuarter * p, Point(-SQRT_2/2., SQRT_2/2., 0.));
+    EXPECT_EQ(fullQuarter * p, Point(-1., 0., 0.));
 }
 
 TEST_F(MatrixTransformations, ShearXProportionateToY)
 {
     auto p = Point(2., 3., 4.);
     auto shear = Transform::shear(1., 0., 0., 0., 0., 0.);
-    EXPECT_EQ(Linear::mult(shear, p), Point(5., 3., 4.));
+    EXPECT_EQ(shear * p, Point(5., 3., 4.));
 }
 
 TEST_F(MatrixTransformations, ShearXProportionateToZ)
 {
     auto p = Point(2., 3., 4.);
     auto shear = Transform::shear(0., 1., 0., 0., 0., 0.);
-    EXPECT_EQ(Linear::mult(shear, p), Point(6., 3., 4.));
+    EXPECT_EQ(shear * p, Point(6., 3., 4.));
 }
 
 TEST_F(MatrixTransformations, ShearYProportionateToX)
 {
     auto p = Point(2., 3., 4.);
     auto shear = Transform::shear(0., 0., 1., 0., 0., 0.);
-    EXPECT_EQ(Linear::mult(shear, p), Point(2., 5., 4.));
+    EXPECT_EQ(shear * p, Point(2., 5., 4.));
 }
 
 TEST_F(MatrixTransformations, ShearYProportionateToZ)
 {
     auto p = Point(2., 3., 4.);
     auto shear = Transform::shear(0., 0., 0., 1., 0., 0.);
-    EXPECT_EQ(Linear::mult(shear, p), Point(2., 7., 4.));
+    EXPECT_EQ(shear * p, Point(2., 7., 4.));
 }
 
 TEST_F(MatrixTransformations, ShearZProportionateToX)
 {
     auto p = Point(2., 3., 4.);
     auto shear = Transform::shear(0., 0., 0., 0., 1., 0.);
-    EXPECT_EQ(Linear::mult(shear, p), Point(2., 3., 6.));
+    EXPECT_EQ(shear * p, Point(2., 3., 6.));
 }
 
 TEST_F(MatrixTransformations, ShearZProportionateToY)
 {
     auto p = Point(2., 3., 4.);
     auto shear = Transform::shear(0., 0., 0., 0., 0., 1.);
-    EXPECT_EQ(Linear::mult(shear, p), Point(2., 3., 7.));
+    EXPECT_EQ(shear * p, Point(2., 3., 7.));
 }
 
 TEST_F(MatrixTransformations, TransformationsAppliedInSequence)
@@ -575,11 +575,11 @@ TEST_F(MatrixTransformations, TransformationsAppliedInSequence)
     auto A = Transform::rotateX(HALF_PI);
     auto B = Transform::scale(5., 5., 5.);
     auto C = Transform::translation(10., 5., 7.);
-    auto p2 = Linear::mult(A, p);
+    auto p2 = A * p;
     EXPECT_EQ(p2, Point(1., -1., 0.));
-    auto p3 = Linear::mult(B, p2);
+    auto p3 = B * p2;
     EXPECT_EQ(p3, Point(5., -5., 0.));
-    auto p4 = Linear::mult(C, p3);
+    auto p4 = C * p3;
     EXPECT_EQ(p4, Point(15., 0., 7.));
 }
 
@@ -591,5 +591,5 @@ TEST_F(MatrixTransformations, ChainingTransformationsAndApplying)
     auto B = Transform::scale(5., 5., 5.);
     auto C = Transform::translation(10., 5., 7.);
     auto T = C * B * A;
-    EXPECT_EQ(Linear::mult(T, p), Point(15., 0., 7.));
+    EXPECT_EQ(T * p, Point(15., 0., 7.));
 }
