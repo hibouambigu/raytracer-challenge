@@ -259,8 +259,8 @@ Matrix<T, 4> rotateY(double angle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Construct a transformation matrix to rotate around the Z-axis.
-template <typename T=double>
-Matrix<T, 4> rotateZ(double angle)
+template <typename T>
+Matrix<T, 4> rotateZ(T angle)
 {
     auto rotate = Matrix<T, 4>::identity();
     rotate(0, 0) = std::cos(angle);
@@ -268,6 +268,21 @@ Matrix<T, 4> rotateZ(double angle)
     rotate(1, 0) = std::sin(angle);
     rotate(1, 1) = std::cos(angle);
     return rotate;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Construct a transformation matrix to rotate around the Z-axis.
+template <typename T>
+Matrix<T, 4> shear(T xY, T xZ, T yX, T yZ, T zX, T zY)
+{
+    auto shear = Matrix<T, 4>::identity();
+    shear(0, 1) = xY;
+    shear(0, 2) = xZ;
+    shear(1, 0) = yX;
+    shear(1, 2) = yZ;
+    shear(2, 0) = zX;
+    shear(2, 1) = zY;
+    return shear;
 }
 
 

@@ -527,6 +527,48 @@ TEST_F(MatrixTransformations, RotatePointAroundZ)
     EXPECT_EQ(Linear::mult(fullQuarter, p), Point(-1., 0., 0.));
 }
 
+TEST_F(MatrixTransformations, ShearXProportionateToY)
+{
+    auto p = Point(2., 3., 4.);
+    auto shear = Transform::shear(1., 0., 0., 0., 0., 0.);
+    EXPECT_EQ(Linear::mult(shear, p), Point(5., 3., 4.));
+}
+
+TEST_F(MatrixTransformations, ShearXProportionateToZ)
+{
+    auto p = Point(2., 3., 4.);
+    auto shear = Transform::shear(0., 1., 0., 0., 0., 0.);
+    EXPECT_EQ(Linear::mult(shear, p), Point(6., 3., 4.));
+}
+
+TEST_F(MatrixTransformations, ShearYProportionateToX)
+{
+    auto p = Point(2., 3., 4.);
+    auto shear = Transform::shear(0., 0., 1., 0., 0., 0.);
+    EXPECT_EQ(Linear::mult(shear, p), Point(2., 5., 4.));
+}
+
+TEST_F(MatrixTransformations, ShearYProportionateToZ)
+{
+    auto p = Point(2., 3., 4.);
+    auto shear = Transform::shear(0., 0., 0., 1., 0., 0.);
+    EXPECT_EQ(Linear::mult(shear, p), Point(2., 7., 4.));
+}
+
+TEST_F(MatrixTransformations, ShearZProportionateToX)
+{
+    auto p = Point(2., 3., 4.);
+    auto shear = Transform::shear(0., 0., 0., 0., 1., 0.);
+    EXPECT_EQ(Linear::mult(shear, p), Point(2., 3., 6.));
+}
+
+TEST_F(MatrixTransformations, ShearZProportionateToY)
+{
+    auto p = Point(2., 3., 4.);
+    auto shear = Transform::shear(0., 0., 0., 0., 0., 1.);
+    EXPECT_EQ(Linear::mult(shear, p), Point(2., 3., 7.));
+}
+
 
 
 
