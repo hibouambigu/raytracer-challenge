@@ -108,14 +108,30 @@ TEST(VectorGeometry, CrossProduct)
 //    }
 //}
 //
+
+TEST(TupleArithmetic, AddingPointAndVector)
+{
+    Tuple p{3, -2, 5, 1};
+    Tuple v{-2, 3, 1, 0};
+    Tuple expected{1, 1, 6, 1};
+    EXPECT_EQ(p + v, expected);
+}
+
+TEST(TupleArithmetic, MultiplyTupleByScalar)
+{
+    Tuple a{1, -2, 3, -4};
+    Tuple expected{3.5, -7, 10.5, -14};
+    EXPECT_EQ(a * 3.5, expected);
+}
+//    SECTION("multiplying a tuple by a scalar")
+//    {
+//        auto a = Tuple{ 1, -2, 3, -4 };
+//        // auto v2 = Vector(5, 6, 7);
+//        REQUIRE(a * 3.5 == Tuple(3.5, -7, 10.5, -14));
+//    }
+
 //TEST_CASE("Tuple Arithmetic")
 //{
-//    SECTION("adding a point and a vector results in a vector")
-//    {
-//        Tuple p{ 3, -2, 5, 1 };
-//        Tuple v{ -2, 3, 1, 0 };
-//        REQUIRE(p + v == Tuple{ 1, 1, 6, 1 });
-//    }
 //    SECTION("subtracting two points results in a vector")
 //    {
 //        auto p1 = Point(3, 2, 1);
@@ -138,12 +154,6 @@ TEST(VectorGeometry, CrossProduct)
 //    {
 //        auto v1 = Tuple{ 1, -2, 3, -4 };
 //        REQUIRE(-v1 == Tuple{ -1, 2, -3, 4 });
-//    }
-//    SECTION("multiplying a tuple by a scalar")
-//    {
-//        auto a = Tuple{ 1, -2, 3, -4 };
-//        // auto v2 = Vector(5, 6, 7);
-//        REQUIRE(a * 3.5 == Tuple(3.5, -7, 10.5, -14));
 //    }
 //    SECTION("multiplying a tuple by a fraction")
 //    {

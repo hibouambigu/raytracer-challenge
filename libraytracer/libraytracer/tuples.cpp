@@ -9,33 +9,33 @@ bool operator==(const Tuple& a, const Tuple& b)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Tuple operator+(const Tuple& a, const Tuple& b)
 {
-    return Tuple{ a.x + b.x, a.y + b.y, a.z + b.z,
+    return { a.x + b.x, a.y + b.y, a.z + b.z,
                   a.w + b.w };
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Tuple operator*(const Tuple& a, const double& s)
 {
-    return Tuple{ a.x * s, a.y * s, a.z * s, a.w * s };
+    return { a.x * s, a.y * s, a.z * s, a.w * s };
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Tuple operator/(const Tuple& a, const double& s)
 {
-    return Tuple{ a.x / s, a.y / s, a.z / s, a.w / s };
+    return { a.x / s, a.y / s, a.z / s, a.w / s };
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Tuple operator-(const Tuple& a, const Tuple& b)
 {
-    return Tuple{ a.x - b.x, a.y - b.y, a.z - b.z,a.w - b.w };
+    return { a.x - b.x, a.y - b.y, a.z - b.z,a.w - b.w };
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Tuple Tuple::operator-() const
 {
-    return Tuple{ 0 - x, 0 - y, 0 - z, 0 - w };
+    return { 0 - x, 0 - y, 0 - z, 0 - w };
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ double Tuple::magnitude() const
 Tuple Tuple::normalize(const Tuple& t)
 {
     auto const M = t.magnitude();
-    return Tuple{ t.x / M, t.y / M, t.z / M, t.w / M };
+    return { t.x / M, t.y / M, t.z / M, t.w / M };
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
