@@ -10,7 +10,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} ../libraytra
 
 # test executable to run
 # test_*.cpp are source files with tests
-add_executable(libraytracer_tests_run test_tuples.cpp ../libraytracer/tuples.cpp ../libraytracer/colours.cpp test_colours.cpp ../libraytracer/canvas.cpp test_canvas.cpp ../libraytracer/matrix_2d.cpp test_matrix_2d.cpp ../libraytracer/matrix.cpp ../libraytracer/matrix.h test_matrix.cpp ../libraytracer/rays.cpp ../libraytracer/rays.h test_rays.cpp ../libraytracer/sphere.cpp ../libraytracer/sphere.h)
+add_executable(libraytracer_tests_run test_tuples.cpp ../libraytracer/tuples.cpp ../libraytracer/colours.cpp test_colours.cpp ../libraytracer/canvas.cpp test_canvas.cpp ../libraytracer/matrix_2d.cpp test_matrix_2d.cpp ../libraytracer/matrix.cpp ../libraytracer/matrix.h test_matrix.cpp ../libraytracer/rays.cpp ../libraytracer/rays.h test_rays.cpp ../libraytracer/shapes.cpp ../libraytracer/shapes.h ../libraytracer/intersection.cpp ../libraytracer/intersection.h)
 target_link_libraries(libraytracer_tests_run gtest gtest_main)
 
 

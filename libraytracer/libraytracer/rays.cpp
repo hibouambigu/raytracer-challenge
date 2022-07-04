@@ -14,7 +14,7 @@ Point Ray::getOrigin() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-Vector Ray::getdirection() const
+Vector Ray::getDirection() const
 {
     return direction;
 }
@@ -26,9 +26,9 @@ Tuple Ray::position(double t)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-std::vector<double> Ray::intersect(Sphere sphere)
+Intersections Ray::intersect(Sphere& sphere)
 {
-    std::vector<double> intersections;
+    Intersections intersections;
     const auto vSphereToRay = origin - sphere.position;
     const auto a = Tuple::dot(direction, direction);
     const auto b = 2.0 * Tuple::dot(direction, vSphereToRay);
@@ -38,8 +38,10 @@ std::vector<double> Ray::intersect(Sphere sphere)
     const auto TWO_A = a * 2.0;
     if (discriminant >= 0)
     {
-        intersections.push_back( (-b - SQRT_D) / TWO_A );
-        intersections.push_back( (-b + SQRT_D) / TWO_A );
+        Intersection i1{ (-b - SQRT_D) / TWO_A, sphere };
+        Intersection i2{ (-b + SQRT_D) / TWO_A, sphere };
+        intersections.add( i1 );
+        intersections.add( i2 );
     }
     return intersections;
 }

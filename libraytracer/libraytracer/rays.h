@@ -7,10 +7,11 @@
 
 #pragma once
 
-#include <vector>
-#include <cmath>
+#include "shapes.h"
 #include "tuples.h"
-#include "sphere.h"
+#include "intersection.h"
+#include <cmath>
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class Ray
@@ -18,11 +19,11 @@ class Ray
   public:
     Ray(Point origin, Vector direction);
     [[nodiscard]] Point getOrigin() const;
-    [[nodiscard]] Vector getdirection() const;
+    [[nodiscard]] Vector getDirection() const;
     /// Get the position at the given distance t along the ray
     Tuple position(double t);
     /// Intersect this Ray() with a Sphere(). Returns collection of t values where intersections occur.
-    std::vector<double> intersect(Sphere sphere);
+    Intersections intersect(Sphere& sphere);
 
   private:
     Point origin;
