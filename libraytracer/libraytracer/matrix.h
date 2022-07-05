@@ -223,7 +223,7 @@ namespace Transform {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Construct a 4x4 translation matrix with the given x, y, z.
-template <typename T>
+template <typename T=double>
 Matrix<T, 4> translation(T x, T y, T z)
 {
     auto translation = Matrix<T, 4>::identity();
@@ -235,7 +235,7 @@ Matrix<T, 4> translation(T x, T y, T z)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Construct a 4x4 scaling matrix with the given x y and z scale factors.
-template <typename T>
+template <typename T=double>
 Matrix<T, 4> scale(T x, T y, T z)
 {
     auto scaling = Matrix<T, 4>::identity();
@@ -273,7 +273,7 @@ Matrix<T, 4> rotateY(double angle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Construct a transformation matrix to rotate around the Z-axis.
-template <typename T>
+template <typename T=double>
 Matrix<T, 4> rotateZ(T angle)
 {
     auto rotate = Matrix<T, 4>::identity();
@@ -286,7 +286,7 @@ Matrix<T, 4> rotateZ(T angle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Construct a transformation matrix to rotate around the Z-axis.
-template <typename T>
+template <typename T=double>
 Matrix<T, 4> shear(T xY, T xZ, T yX, T yZ, T zX, T zY)
 {
     auto shear = Matrix<T, 4>::identity();

@@ -10,24 +10,29 @@
 #include "shapes.h"
 #include "tuples.h"
 #include "intersection.h"
+#include "matrix.h"
 #include <cmath>
 #include <vector>
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class Ray
 {
   public:
-    Ray(Point origin, Vector direction);
-    [[nodiscard]] Point getOrigin() const;
-    [[nodiscard]] Vector getDirection() const;
+    Ray(Tuple origin, Tuple direction);
+    [[nodiscard]] Tuple getOrigin() const;
+    [[nodiscard]] Tuple getDirection() const;
     /// Get the position at the given distance t along the ray
     Tuple position(double t);
     /// Intersect this Ray() with a Sphere(). Returns collection of t values where intersections occur.
     Intersections intersect(Sphere& sphere);
+    /// Apply a Transform() Matrix() to this ray.
+    Ray transform(Matrix<double, 4>& t);
+
 
   private:
-    Point origin;
-    Vector direction;
+    Tuple origin;
+    Tuple direction;
 };
 
 

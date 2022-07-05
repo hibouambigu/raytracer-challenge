@@ -1,6 +1,7 @@
 #include "intersection.h"
 #include "rays.h"
 #include "shapes.h"
+#include "matrix.h"
 #include "gtest/gtest.h"
 
 TEST(Raycasting, RayIsConstructed)
@@ -14,7 +15,7 @@ TEST(Raycasting, RayIsConstructed)
 
 TEST(Raycasting, ComputePointFromDistance)
 {
-    auto ray = Ray({2, 3, 4}, {1, 0, 0});
+    auto ray = Ray(Point{2, 3, 4}, Vector{1, 0, 0});
     EXPECT_EQ(ray.position(0), Point(2, 3, 4));
     EXPECT_EQ(ray.position(1), Point(3, 3, 4));
     EXPECT_EQ(ray.position(-1), Point(1, 3, 4));
@@ -23,7 +24,7 @@ TEST(Raycasting, ComputePointFromDistance)
 
 TEST(Raycasting, IntersectsSphereAtTwoPoints)
 {
-    Ray ray{{0, 0, -5}, {0, 0, 1}};
+    Ray ray{Point{0, 0, -5}, Vector{0, 0, 1}};
     Sphere s{};
     auto xs = ray.intersect(s);
     EXPECT_EQ(xs.count(), 2);
@@ -33,7 +34,7 @@ TEST(Raycasting, IntersectsSphereAtTwoPoints)
 
 TEST(Raycasting, TangentialIntersectionOfSphere)
 {
-    Ray ray{{0, 1, -5}, {0, 0, 1}};
+    Ray ray{Point{0, 1, -5}, Vector{0, 0, 1}};
     Sphere s{};
     auto xs = ray.intersect(s);
     EXPECT_EQ(xs.count(), 2);
@@ -43,7 +44,7 @@ TEST(Raycasting, TangentialIntersectionOfSphere)
 
 TEST(Raycasting, RayMissesASphere)
 {
-    Ray ray{{0, 2, -5}, {0, 0, 1}};
+    Ray ray{Point{0, 2, -5}, Vector{0, 0, 1}};
     Sphere s{};
     auto xs = ray.intersect(s);
     EXPECT_EQ(xs.count(), 0);
@@ -51,7 +52,7 @@ TEST(Raycasting, RayMissesASphere)
 
 TEST(Raycasting, RayOriginInsideSphere)
 {
-    Ray ray{{0, 0, 0}, {0, 0, 1}};
+    Ray ray{Point{0, 0, 0}, Vector{0, 0, 1}};
     Sphere s{};
     auto xs = ray.intersect(s);
     EXPECT_EQ(xs.count(), 2);
@@ -61,7 +62,7 @@ TEST(Raycasting, RayOriginInsideSphere)
 
 TEST(Raycasting, RayIsBehindSphere)
 {
-    Ray ray{{0, 0, 5}, {0, 0, 1}};
+    Ray ray{Point{0, 0, 5}, Vector{0, 0, 1}};
     Sphere s{};
     auto xs = ray.intersect(s);
     EXPECT_EQ(xs.count(), 2);
@@ -81,7 +82,7 @@ TEST(Intersections, IntersectionEncapsulatesObjectAndT)
 
 TEST(Intersections, IntersectSetsObjectOnIntersection)
 {
-    Ray ray{{0, 0, -5}, {0, 0, 1}};
+    Ray ray{Point{0, 0, -5}, Vector{0, 0, 1}};
     Sphere s{};
     auto xs = ray.intersect(s);
     EXPECT_EQ(xs.count(), 2);
@@ -160,4 +161,21 @@ TEST(Intersections, HitIsAlwaysLowestNonNegative)
     EXPECT_EQ(i, i4);
 }
 
+TEST(Raycasting, TranslatingRays)
+{
+    Ray r{ Point{1, 2, 3}, Vector{0, 1, 0} };
+    auto t = Transform::translation(3., 4., 5.);
+    auto r2 = r.transform(t);
+    EXPECT_EQ(r2.getOrigin(), Point(4, 6, 8));
+    EXPECT_EQ(r2.getDirection(), Vector(0, 1, 0));
+}
+
+TEST(Raycasting, ScalingRays)
+{
+    Ray r{ Point{1, 2, 3}, Vector{0, 1, 0} };
+    auto t = Transform::scale(2., 3., 4.);
+    auto r2 = r.transform(t);
+    EXPECT_EQ(r2.getOrigin(), Point(2, 6, 12));
+    EXPECT_EQ(r2.getDirection(), Vector(0, 3, 0));
+}
 

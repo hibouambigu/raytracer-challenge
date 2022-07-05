@@ -1,20 +1,20 @@
 #include "rays.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-Ray::Ray(Point origin, Vector direction)
+Ray::Ray(Tuple origin, Tuple direction)
 : origin(origin),
   direction(direction)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-Point Ray::getOrigin() const
+Tuple Ray::getOrigin() const
 {
     return origin;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-Vector Ray::getDirection() const
+Tuple Ray::getDirection() const
 {
     return direction;
 }
@@ -44,4 +44,12 @@ Intersections Ray::intersect(Sphere& sphere)
         intersections.add( i2 );
     }
     return intersections;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+Ray Ray::transform(Matrix<double, 4>& t)
+{
+    auto o = t * origin;
+    auto d = t * direction;
+    return {o, d};
 }
