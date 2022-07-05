@@ -112,6 +112,7 @@ TEST(Intersections, FindHitWhenWithAllPositiveT)
     xs.add(i2);
     xs.add(i1);
     auto i = xs.findHit();
+    EXPECT_TRUE(i.isHit);
     EXPECT_EQ(i, i1);
 }
 
@@ -124,6 +125,7 @@ TEST(Intersections, FindHitWhenWithSomeNegativeT)
     xs.add(i2);
     xs.add(i1);
     auto i = xs.findHit();
+    EXPECT_TRUE(i.isHit);
     EXPECT_EQ(i, i2);
 }
 
@@ -136,7 +138,9 @@ TEST(Intersections, FindHitWhenWithAllNegativeT)
     xs.add(i2);
     xs.add(i1);
     auto i = xs.findHit();
-    // i should be nothing
+    // i should be a miss
+    EXPECT_FALSE(i.isHit);
+
 }
 
 TEST(Intersections, HitIsAlwaysLowestNonNegative)
@@ -152,6 +156,7 @@ TEST(Intersections, HitIsAlwaysLowestNonNegative)
     xs.add(i3);
     xs.add(i4);
     auto i = xs.findHit();
+    EXPECT_TRUE(i.isHit);
     EXPECT_EQ(i, i4);
 }
 
