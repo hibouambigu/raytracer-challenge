@@ -88,3 +88,71 @@ TEST(Intersections, IntersectSetsObjectOnIntersection)
     EXPECT_EQ(xs(0).shape, s);
     EXPECT_EQ(xs(1).shape, s);
 }
+
+TEST(Intersections, SortedByIncreasingT)
+{
+    Sphere s{};
+    Intersection i1{5, s};
+    Intersection i2{7, s};
+    Intersection i3{-3, s};
+    Intersection i4{2, s};
+    Intersections xs{ {i1, i2, i3, i4} };
+    EXPECT_EQ(xs(0).t, -3);
+    EXPECT_EQ(xs(1).t, 2);
+    EXPECT_EQ(xs(2).t, 5);
+    EXPECT_EQ(xs(3).t, 7);
+}
+
+TEST(Intersections, FindHitWhenWithAllPositiveT)
+{
+    Sphere s{};
+    Intersection i1{1, s};
+    Intersection i2{2, s};
+    Intersections xs{};
+    xs.add(i2);
+    xs.add(i1);
+    auto i = xs.findHit();
+    EXPECT_EQ(i, i1);
+}
+
+TEST(Intersections, FindHitWhenWithSomeNegativeT)
+{
+    Sphere s{};
+    Intersection i1{-1, s};
+    Intersection i2{1, s};
+    Intersections xs{};
+    xs.add(i2);
+    xs.add(i1);
+    auto i = xs.findHit();
+    EXPECT_EQ(i, i2);
+}
+
+TEST(Intersections, FindHitWhenWithAllNegativeT)
+{
+    Sphere s{};
+    Intersection i1{-2, s};
+    Intersection i2{-1, s};
+    Intersections xs{};
+    xs.add(i2);
+    xs.add(i1);
+    auto i = xs.findHit();
+    // i should be nothing
+}
+
+TEST(Intersections, HitIsAlwaysLowestNonNegative)
+{
+    Sphere s{};
+    Intersection i1{5, s};
+    Intersection i2{7, s};
+    Intersection i3{-3, s};
+    Intersection i4{2, s};
+    Intersections xs{};
+    xs.add(i1);
+    xs.add(i2);
+    xs.add(i3);
+    xs.add(i4);
+    auto i = xs.findHit();
+    EXPECT_EQ(i, i4);
+}
+
+

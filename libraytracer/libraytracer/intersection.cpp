@@ -6,7 +6,11 @@ Intersection::Intersection(double t, Shape& shape)
 : t(t), shape(shape)
 {}
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Intersection::operator<(const Intersection& b) const
+{
+    return t < b.t;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,9 +20,20 @@ Intersections::Intersections()
 {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+Intersections::Intersections(std::vector<Intersection> ints)
+: intersections({})
+{
+    for (const auto& i: ints) {
+        intersections.push_back(i);
+    }
+    sortIntersections();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 void Intersections::add(Intersection& intersection)
 {
     intersections.push_back(intersection);
+    sortIntersections();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,4 +46,21 @@ Intersection Intersections::operator()(size_t n) const
 size_t Intersections::count() const
 {
     return intersections.size();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void Intersections::sortIntersections()
+{
+    // 1. convert to list
+    std::list<Intersection> listOfInts{};
+    for (const auto& i: intersections) {
+        listOfInts.push_back(i);
+    }
+    // 2. sort in place
+    listOfInts.sort();
+    // 3. write back to vector
+    intersections.clear();
+    for (const auto& i: listOfInts) {
+        intersections.push_back(i);
+    }
 }
