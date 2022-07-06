@@ -179,3 +179,40 @@ TEST(Raycasting, ScalingRays)
     EXPECT_EQ(r2.getDirection(), Vector(0, 3, 0));
 }
 
+TEST(Raycasting, DefaultSphereTransformation)
+{
+    Sphere s{};
+    const auto ident{ Matrix<double, 4>::identity() };
+    EXPECT_EQ(s.getTransform(), ident);
+}
+
+TEST(Raycasting, SetTransformOfASphere)
+{
+    Sphere s{};
+    const auto T{ Transform::translation(2., 3., 4.) };
+    s.setTransform(T);
+    EXPECT_EQ(s.getTransform(), T);
+}
+
+TEST(Raycasting, IntersectingScaledSphereWithRay)
+{
+    Sphere s{};
+    Ray r{ Point{0, 0, -5}, Vector{0, 0, 1} };
+    s.setTransform(Transform::scale(2., 2., 2.));
+    auto xs{ r.intersect(s) };
+    EXPECT_EQ(xs.count(), 2);
+    EXPECT_EQ(xs(0).t, 3.);
+    EXPECT_EQ(xs(1).t, 7.);
+}
+
+TEST(Raycasting, IntersectingTranslatedSphereWithRay)
+{
+    Sphere s{};
+    Ray r{ Point{0, 0, -5}, Vector{0, 0, 1} };
+    s.setTransform(Transform::translation(5., 0., 0.));
+    auto xs{ r.intersect(s) };
+    EXPECT_EQ(xs.count(), 0);
+}
+
+
+

@@ -29,9 +29,14 @@ Tuple Ray::position(double t)
 Intersections Ray::intersect(Sphere& sphere)
 {
     Intersections intersections;
-    const auto vSphereToRay = origin - sphere.position;
-    const auto a = Tuple::dot(direction, direction);
-    const auto b = 2.0 * Tuple::dot(direction, vSphereToRay);
+    // we use the sphere-transformed ray's direction and
+    //  origin in our calculations (*not* *this)
+    Ray rayT = transform(sphere.getTransform().inverse());
+    const Tuple rayDirection{ rayT.getDirection() };
+    const Tuple rayOrigin{ rayT.getOrigin() };
+    const auto vSphereToRay = rayOrigin - sphere.getPosition();
+    const auto a = Tuple::dot(rayDirection, rayDirection);
+    const auto b = 2.0 * Tuple::dot(rayDirection, vSphereToRay);
     const auto c = Tuple::dot(vSphereToRay, vSphereToRay) - 1.0;
     const auto discriminant = b * b - 4.0 * a * c;
     const auto SQRT_D = std::sqrt(discriminant);
@@ -47,7 +52,7 @@ Intersections Ray::intersect(Sphere& sphere)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-Ray Ray::transform(Matrix<double, 4>& t)
+Ray Ray::transform(Matrix<double, 4> t) const
 {
     auto o = t * origin;
     auto d = t * direction;

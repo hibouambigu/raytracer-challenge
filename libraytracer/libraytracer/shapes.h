@@ -8,23 +8,32 @@
 #pragma once
 
 #include "tuples.h"
+#include "matrix.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Shape
 {
   public:
-    /// Construct a new Shape() object.
-    explicit Shape(Point position);
+    /// Construct a new Shape object.
+    explicit Shape(Tuple position);
     /// Compare identity. Are a and b the same shape?
     friend bool operator== (const Shape& a, const Shape& b);
+    /// Get current position of this Shape
+    Tuple getPosition() const;
+    /// Get the transformation matrix applied to this Shape
+    [[nodiscard]] TransformationMatrix getTransform() const;
+    /// Set the transformation matrix applied to this Shape
+    void setTransform(TransformationMatrix t);
 
-    Point position; /// position of the Shape in the Scene right now
+  private:
+    Tuple position; /// position of the Shape in the Scene right now
+    TransformationMatrix transformation;    // the transformation to be applied during raycasting
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 struct Sphere : public Shape
 {
-    Sphere() : Shape({}) {};
-    explicit Sphere(Point position) : Shape(position) {};
+    Sphere() : Shape( Point{} ) {};
+    explicit Sphere(Tuple position) : Shape(position) {};
 };

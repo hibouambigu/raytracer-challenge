@@ -26,8 +26,8 @@ class Ray
     Tuple position(double t);
     /// Intersect this Ray() with a Sphere(). Returns collection of t values where intersections occur.
     Intersections intersect(Sphere& sphere);
-    /// Apply a Transform() Matrix() to this ray.
-    Ray transform(Matrix<double, 4>& t);
+    /// Apply a Transform() Matrix(), returning a new Ray.
+    Ray transform(TransformationMatrix t) const;
 
 
   private:
