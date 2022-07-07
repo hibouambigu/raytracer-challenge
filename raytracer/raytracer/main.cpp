@@ -2,6 +2,7 @@
 #include <libraytracer/tuples.h>
 #include <libraytracer/matrix_2d.h>
 #include <libraytracer/canvas.h>
+#include <libraytracer/rays.h>
 
 
 struct Projectile
@@ -49,16 +50,58 @@ void run_projectile()
         p = Environment::tick(e, p);
     };
 
-
     c.writePPMToFile();
+}
+
+void run_raycasted_sphere_demo()
+{
+    // draws a flattened sphere to the canvas in order to demo
+    //  the raycaster engine
+    std::cout << "Raycasted Sphere Demo\n";
+    constexpr size_t CANVAS_SIZE{ 100 };
+    constexpr size_t W{CANVAS_SIZE}, H{CANVAS_SIZE};
+    constexpr size_t N_RAYS{ W * H };
+    Canvas canvas{W, H};
+    // sphere at origin
+    Sphere s{};
+    // transform sphere
+    TransformationMatrix T =
+        Transform::scale(.5, 1.0, 1.0);
+    s.setTransform(T);
+    // ray distance away from sphere origin on z-axis
+    const Point rayOrigin{0., 0., -5.};
+    constexpr double WALL_Z{ 10.0 };
+    constexpr double WALL_SIZE{ 7.0 };
+    constexpr double HALF_WALL_SIZE{WALL_SIZE / 2.0};
+    constexpr double PIXEL_SIZE{ WALL_SIZE / CANVAS_SIZE};
+    std::cout << "Begin raytracing..\n";
+    size_t nRaysCasted{};
+    for (size_t y{}; y < canvas.getHeight(); ++y) {
+        const double worldY{ HALF_WALL_SIZE - PIXEL_SIZE * (double)y };
+        for (size_t x{}; x < canvas.getWidth(); ++x) {
+            const double worldX{ -HALF_WALL_SIZE + PIXEL_SIZE * (double)x };
+            const Point rayPosition{
+                static_cast<double>(worldX), static_cast<double>(worldY), WALL_Z
+            };
+            Ray r{ rayOrigin, Tuple::normalize(rayPosition - rayOrigin) };
+            Intersections xs = r.intersect(s);
+            const auto pixelHitSphere{ xs.findHit().isHit };
+            if (pixelHitSphere)
+                canvas.writePixel(x, y, Colour{.7, 0., 1.});
+            nRaysCasted++;
+        }
+        double percentComplete{ (static_cast<double>(nRaysCasted) / N_RAYS) * 100. };
+        std::cout << percentComplete << "%\n";
+    }
+
+    std::cout << "\nRaytracing complete. Rendering to PPM file...";
+    // save the canvas to file
+    canvas.writePPMToFile();
+    std::cout << "\nPPM output file generated!\n";
 }
 
 int main()
 {
-    run_projectile();
-//    auto matrix = Matrix2D<Colour>(5, 10);
-//    matrix.set(4, 8, Colour{.25, .5, .6667});
-//    matrix.set(3, 7, Colour{.75, .2, .3});
-//    std::cout << matrix.get(4, 8) << "\n" << matrix.get(3, 7) << "\n";
+    run_raycasted_sphere_demo();
     return 1;
 }
