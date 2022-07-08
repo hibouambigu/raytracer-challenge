@@ -26,7 +26,7 @@ class Shape
     /// Set the transformation matrix applied to this Shape
     void setTransform(TransformationMatrix t);
 
-  private:
+  protected:
     Tuple position; /// position of the Shape in the Scene right now
     TransformationMatrix transformation;    // the transformation to be applied during raycasting
 };
@@ -36,4 +36,6 @@ struct Sphere : public Shape
 {
     Sphere() : Shape( Point{} ) {};
     explicit Sphere(Tuple position) : Shape(position) {};
+    /// Calculate the normal vector at a specified **world** point on the Sphere.
+    Tuple normalAt(Tuple worldPoint);
 };

@@ -45,10 +45,10 @@ double Tuple::magnitude() const
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-Tuple Tuple::normalize(const Tuple& t)
+Tuple Tuple::normalize() const
 {
-    auto const M = t.magnitude();
-    return { t.x / M, t.y / M, t.z / M, t.w / M };
+    auto const M = magnitude();
+    return { x / M, y / M, z / M, w / M };
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -45,7 +45,7 @@ TEST(VectorGeometry, Normalisation)
 {
     // normalising vector (4, 0, 0) yields (1, 0, 0)
     auto v = Vector(4, 0, 0);
-    EXPECT_EQ(Tuple::normalize(v), Vector(1, 0, 0));
+    EXPECT_EQ(v.normalize(), Vector(1, 0, 0));
 }
 
 TEST(VectorGeometry, DotProduct)

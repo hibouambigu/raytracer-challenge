@@ -17,7 +17,9 @@ struct Tuple
     /// negate the tuple (ie: subtract it from the zero vector)
     Tuple operator-() const;
     double magnitude() const;
-    static Tuple normalize(const Tuple& t);
+    /// Get the normalized version of this Tuple.
+    Tuple normalize() const;
+//    static Tuple normalize(const Tuple& t);
     static double dot(const Tuple& a, const Tuple& b);
     bool isPoint() const;
     bool isVector() const;

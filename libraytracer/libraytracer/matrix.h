@@ -69,7 +69,7 @@ class Matrix
         return X;
     };
     /// Multiply this 4x4 matrix with a tuple (Point() or Vector()).
-    Tuple operator*(const Tuple& t) {
+    Tuple operator*(Tuple t) const {
         auto X = Tuple{};
         constexpr auto SIZE{4};
         for(size_t row{}; row < SIZE; row++) {
