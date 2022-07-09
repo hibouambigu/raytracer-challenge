@@ -60,3 +60,20 @@ TEST(SphereNormals, NormalOnTransformedSphere)
     auto n = s.normalAt(Point{0., sqrt2/2.0, -sqrt2/2.0});
     EXPECT_EQ(n, Vector(0, 0.97014, -0.24254));
 }
+
+
+TEST(SphereMaterials, SphereHasDefaultMaterial)
+{
+    Sphere s{};
+    Material m{s.getMaterial()};
+    EXPECT_EQ(m, Material());
+}
+
+TEST(SphereMaterials, AssigningMaterialToSphere)
+{
+    Sphere s{};
+    Material m{};
+    m.ambient = 1.0;
+    s.setMaterial(m);
+    EXPECT_EQ(m, s.getMaterial());
+}

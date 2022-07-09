@@ -19,7 +19,6 @@ struct Tuple
     double magnitude() const;
     /// Get the normalized version of this Tuple.
     Tuple normalize() const;
-//    static Tuple normalize(const Tuple& t);
     static double dot(const Tuple& a, const Tuple& b);
     bool isPoint() const;
     bool isVector() const;
@@ -36,6 +35,8 @@ struct Vector : public Tuple
 {
     Vector(double x, double y, double z) : Tuple(x, y, z, 0.0) {};
     Vector() : Tuple(0.0, 0.0, 0.0, 0.0) {};
+    /// Reflect this vector about a given normal vector.
+    Tuple reflect(Tuple normal);
 };
 
 

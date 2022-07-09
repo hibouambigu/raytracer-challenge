@@ -9,9 +9,9 @@
 
 #include "tuples.h"
 #include "matrix.h"
+#include "materials.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
 class Shape
 {
   public:
@@ -25,10 +25,15 @@ class Shape
     [[nodiscard]] TransformationMatrix getTransform() const;
     /// Set the transformation matrix applied to this Shape
     void setTransform(TransformationMatrix t);
+    /// Set the material for this Shape to be rendered with
+    void setMaterial(Material newMaterial);
+    /// Get the material this Shape is rendered with
+    [[nodiscard]] Material getMaterial() const;
 
   protected:
     Tuple position; /// position of the Shape in the Scene right now
-    TransformationMatrix transformation;    // the transformation to be applied during raycasting
+    TransformationMatrix transformation;    /// the transformation to be applied during raycasting
+    Material material;  /// The surface material to render this shape with.
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

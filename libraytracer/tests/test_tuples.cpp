@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 #include <tuples.h>
 
+#include <numbers>
+
 // Tuple Basics
 TEST(TupleBasics, ZeroWIsPoint)
 {
@@ -63,6 +65,23 @@ TEST(VectorGeometry, CrossProduct)
     auto b = Vector(2, 3, 4);
     ASSERT_EQ(cross(a, b), Vector(-1, 2, -1));
     ASSERT_EQ(cross(b, a), Vector(1, -2, 1));
+}
+
+TEST(VectorReflections, ReflectVectorAt45Deg)
+{
+    Vector v{1, -1, 0};
+    Tuple n{Vector{0, 1, 0}};
+    auto r = v.reflect(n);
+    EXPECT_EQ(r, Vector(1, 1, 0));
+}
+
+TEST(VectorReflections, ReflectVectorOffSlantedSurface)
+{
+    using namespace std::numbers;
+    Vector v{0, -1, 0};
+    Tuple n{Vector{sqrt2/2., sqrt2/2., 0.}};
+    auto r = v.reflect(n);
+    EXPECT_EQ(r, Vector(1, 0, 0));
 }
 
 // Tuple Arithmetic
