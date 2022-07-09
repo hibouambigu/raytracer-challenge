@@ -37,6 +37,8 @@ struct Vector : public Tuple
     Vector() : Tuple(0.0, 0.0, 0.0, 0.0) {};
     /// Reflect this vector about a given normal vector.
     Tuple reflect(Tuple normal);
+    /// Compute a reflection vector, given a source vector (v) and normal vector (n).
+    static Tuple reflect(const Tuple v, const Tuple n);
 };
 
 

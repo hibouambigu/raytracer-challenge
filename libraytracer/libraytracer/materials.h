@@ -8,6 +8,7 @@
 #pragma once
 
 #include "tuples.h"
+#include "lighting.h"
 #include "colours.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,6 +20,8 @@ class Material
     Material();
     /// Compare equality.
     friend bool operator== (const Material& a, const Material& b);
+    /// Apply lighting to this material and compute a single pixel from it.
+    Colour getPixel(Light lighting, Tuple point, Tuple eyeV, Tuple normalV);
 
     Colour colour;
     double ambient, diffuse, specular, shininess;
