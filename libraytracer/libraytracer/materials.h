@@ -17,7 +17,9 @@
 class Material
 {
   public:
-    Material();
+    explicit Material(Colour colour={1, 1, 1},
+             double ambient=0.1, double diffuse=0.9, double specular=0.9,
+             double shininess=200.0);
     /// Compare equality.
     friend bool operator== (const Material& a, const Material& b);
     /// Apply lighting to this material and compute a single pixel from it.

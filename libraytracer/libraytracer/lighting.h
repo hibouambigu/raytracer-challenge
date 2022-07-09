@@ -18,6 +18,8 @@ class Light
 {
   public:
     Light(Tuple position, Colour colour = Colour{1, 1, 1});
+    /// Compare identity. Are a and b the same Light?
+    friend bool operator== (const Light& a, const Light& b);
 
     Colour colour;
     Tuple position;
