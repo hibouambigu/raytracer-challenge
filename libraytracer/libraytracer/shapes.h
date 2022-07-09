@@ -29,6 +29,10 @@ class Shape
     void setMaterial(Material newMaterial);
     /// Get the material this Shape is rendered with
     [[nodiscard]] Material getMaterial() const;
+    /// Calculate the normal vector at a specified **world** point on this shape
+    virtual Tuple normalAt(Tuple worldPoint) = 0;
+    /// Set the colour of this Shape's material.
+    virtual void setColour(Colour colour);
 
   protected:
     Tuple position; /// position of the Shape in the Scene right now
@@ -42,5 +46,5 @@ struct Sphere : public Shape
     Sphere() : Shape( Point{} ) {};
     explicit Sphere(Tuple position) : Shape(position) {};
     /// Calculate the normal vector at a specified **world** point on the Sphere.
-    Tuple normalAt(Tuple worldPoint);
+    Tuple normalAt(Tuple worldPoint) override;
 };

@@ -29,7 +29,8 @@ void run_projectile()
 {
     auto p = Projectile(
                  Point(0, 1, 0),
-                 Tuple::normalize(Vector(1, 1.8, 0)) * 11.25
+
+                 Vector(1, 1.8, 0).normalize() * 11.25
                  );
 
     auto e = Environment(
@@ -58,15 +59,21 @@ void run_raycasted_sphere_demo()
     // draws a flattened sphere to the canvas in order to demo
     //  the raycaster engine
     std::cout << "Raycasted Sphere Demo\n";
-    constexpr size_t CANVAS_SIZE{ 100 };
+    constexpr size_t CANVAS_SIZE{ 400 };
     constexpr size_t W{CANVAS_SIZE}, H{CANVAS_SIZE};
     constexpr size_t N_RAYS{ W * H };
     Canvas canvas{W, H};
     // sphere at origin
     Sphere s{};
+    // adjust material on sphere
+    s.setColour({.5, .2, 1});
+    // point light source
+    const Point lightPos{10, 10, -10};
+    const Colour lightCol{1.0, 1.0, 1.0};
+    PointLight light{lightPos, lightCol};
     // transform sphere
     TransformationMatrix T =
-        Transform::scale(.5, 1.0, 1.0);
+        Transform::scale(1.0, 1.0, 1.0);
     s.setTransform(T);
     // ray distance away from sphere origin on z-axis
     const Point rayOrigin{0., 0., -5.};
@@ -83,11 +90,19 @@ void run_raycasted_sphere_demo()
             const Point rayPosition{
                 static_cast<double>(worldX), static_cast<double>(worldY), WALL_Z
             };
-            Ray r{ rayOrigin, Tuple::normalize(rayPosition - rayOrigin) };
+            Ray r{ rayOrigin, (rayPosition - rayOrigin).normalize() };
             Intersections xs = r.intersect(s);
-            const auto pixelHitSphere{ xs.findHit().isHit };
-            if (pixelHitSphere)
-                canvas.writePixel(x, y, Colour{.7, 0., 1.});
+            Intersection hit = xs.findHit();
+            const auto pixelHitSphere{ hit.isHit };
+            if (pixelHitSphere) {
+                // find normal at the hit and calculate the eye vector
+                Tuple hitPoint = r.position(hit.t);
+                Tuple vNormal = hit.shape.normalAt(hitPoint);
+                Tuple vEye = -r.getDirection();
+                // finally, compute the pixel value
+                Colour pixel = hit.shape.getMaterial().getPixel(light, hitPoint, vEye, vNormal);
+                canvas.writePixel(x, y, pixel);
+            }
             nRaysCasted++;
         }
         double percentComplete{ (static_cast<double>(nRaysCasted) / N_RAYS) * 100. };
