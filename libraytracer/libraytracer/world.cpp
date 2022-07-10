@@ -40,12 +40,24 @@ Light World::getLight()
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 bool World::containsObject(const Shape& shape)
 {
-    bool doesContainIt{false};
+    bool containsObjectOrNot{false};
     for (const auto& o: objects) {
         if (*o == shape) {
-            doesContainIt = true;
+            containsObjectOrNot = true;
             break;
         }
     }
-    return doesContainIt;
+    return containsObjectOrNot;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+Intersections World::intersect(Ray ray)
+{
+    // intersect each object in the World with a Ray,
+    //  building a collection of aggregated Intersections
+//    Intersections ints{};
+//    for(const auto& o: objects) {
+//        ints = ints + ray.intersect(o);
+//    }
+//    return Intersections();
 }

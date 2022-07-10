@@ -1,9 +1,33 @@
 #include "intersection.h"
 #include "shapes.h"
 #include "matrix.h"
+#include "rays.h"
 #include "gtest/gtest.h"
 
 #include <numbers>
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Ray-Sphere intersections
+////////////////////////////////////////////////////////////////////////////////////////////////////
+TEST(SphereIntersections, IntersectingScaledSphereWithRay)
+{
+    Sphere s{};
+    Ray r{ Point{0, 0, -5}, Vector{0, 0, 1} };
+    s.setTransform(Transform::scale(2., 2., 2.));
+    auto xs{ s.intersect(r) };
+    EXPECT_EQ(xs.count(), 2);
+    EXPECT_EQ(xs(0).t, 3.);
+    EXPECT_EQ(xs(1).t, 7.);
+}
+
+TEST(SphereIntersections, IntersectingTranslatedSphereWithRay)
+{
+    Sphere s{};
+    Ray r{ Point{0, 0, -5}, Vector{0, 0, 1} };
+    s.setTransform(Transform::translation(5., 0., 0.));
+    auto xs{ s.intersect(r) };
+    EXPECT_EQ(xs.count(), 0);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -2,6 +2,7 @@
 #include "materials.h"
 #include "matrix.h"
 #include "world.h"
+#include "rays.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,4 +38,15 @@ TEST_F(WorldBasics, DefaultWorld)
     EXPECT_FALSE(w.isEmpty());
     EXPECT_TRUE(w.containsObject(s1));
     EXPECT_TRUE(w.containsObject(s2));
+}
+
+TEST_F(WorldBasics, RayIntersectsWorld)
+{
+    Ray ray{Point{0, 0, -5}, Vector{0, 0, 1}};
+    Intersections xs = w.intersect(ray);
+    ASSERT_EQ(xs.count(), 4);
+    EXPECT_DOUBLE_EQ(xs(0).t, 4.0);
+    EXPECT_DOUBLE_EQ(xs(1).t, 4.5);
+    EXPECT_DOUBLE_EQ(xs(2).t, 5.5);
+    EXPECT_DOUBLE_EQ(xs(3).t, 6.0);
 }

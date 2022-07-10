@@ -54,7 +54,7 @@ void Intersections::add(Intersection& intersection)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Intersection Intersections::operator()(size_t n) const
 {
-    return intersections[n];
+    return intersections.at(n);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ Intersection Intersections::findHit()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void Intersections::sortIntersections()
+void Intersections::sortIntersectionsAscendingTime(std::vector<Intersection>& intersections)
 {
     // 1. convert to list
     std::list<Intersection> listOfInts{};
@@ -88,8 +88,29 @@ void Intersections::sortIntersections()
     // 2. sort in place
     listOfInts.sort();
     // 3. write back to vector
+    // (this might be faster if iterate and copy to orig. vector?? -> need to profile.)
     intersections.clear();
     for (const auto& i: listOfInts) {
         intersections.push_back(i);
     }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void Intersections::sortIntersections()
+{
+    sortIntersectionsAscendingTime(intersections);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+Intersections operator+(const Intersections& A, const Intersections& B)
+{
+    Intersections AB{};
+    for (const auto& i: A.intersections) {
+        AB.intersections.push_back(i);
+    }
+    for (const auto& i: B.intersections) {
+        AB.intersections.push_back(i);
+    }
+    AB.sortIntersections();
+    return AB;
 }

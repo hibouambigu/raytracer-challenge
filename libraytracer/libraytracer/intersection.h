@@ -12,6 +12,7 @@
 #include <list>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+class Shape;
 struct Intersection
 {
     /// Contains the time (t) an intersection with a Shape() takes place at.
@@ -38,6 +39,8 @@ class Intersections
     /// Construct a collection of intersection objects.
     Intersections();
     explicit Intersections(std::vector<Intersection> ints);
+    /// Concatenate two collections of Intersections.
+    friend Intersections operator+(const Intersections& A, const Intersections& B);
     /// Add a new intersection to the collection.
     void add(Intersection& intersection);
     /// Get the nth intersection in the collection.
@@ -46,6 +49,8 @@ class Intersections
     [[nodiscard]] size_t count() const;
     /// Find the significant visible intersection, aka: "hit".
     [[nodiscard]] Intersection findHit();
+    /// Sort a vector of intersections by ascending t value.
+    static void sortIntersectionsAscendingTime(std::vector<Intersection>& intersections);
 
   private:
     std::vector<Intersection> intersections;

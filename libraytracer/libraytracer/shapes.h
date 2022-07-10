@@ -10,6 +10,11 @@
 #include "tuples.h"
 #include "matrix.h"
 #include "materials.h"
+#include "intersection.h"
+#include "rays.h"
+
+class Intersections;
+class Ray;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class Shape
@@ -20,7 +25,7 @@ class Shape
     /// Compare identity. Are a and b the same shape?
     friend bool operator== (const Shape& a, const Shape& b);
     /// Get current position of this Shape
-    Tuple getPosition() const;
+    [[nodiscard]] Tuple getPosition() const;
     /// Get the transformation matrix applied to this Shape
     [[nodiscard]] TransformationMatrix getTransform() const;
     /// Set the transformation matrix applied to this Shape
@@ -33,6 +38,8 @@ class Shape
     virtual Tuple normalAt(Tuple worldPoint) = 0;
     /// Set the colour of this Shape's material.
     virtual void setColour(Colour colour);
+    /// Intersect this Shape() with a Ray(). Returns collection of Intersections from cast Ray.
+    virtual Intersections intersect(Ray ray) = 0;
 
   protected:
     Tuple position; /// position of the Shape in the Scene right now
@@ -47,4 +54,6 @@ struct Sphere : public Shape
     explicit Sphere(Tuple position) : Shape(position) {};
     /// Calculate the normal vector at a specified **world** point on the Sphere.
     Tuple normalAt(Tuple worldPoint) override;
+    /// Intersect this Sphere() with a Ray().
+    Intersections intersect(Ray ray) override;
 };

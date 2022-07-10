@@ -4,6 +4,10 @@
 #include "matrix.h"
 #include "gtest/gtest.h"
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Ray Basics
+////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST(Raycasting, RayIsConstructed)
 {
     auto origin = Point(1, 2, 3);
@@ -26,7 +30,7 @@ TEST(Raycasting, IntersectsSphereAtTwoPoints)
 {
     Ray ray{Point{0, 0, -5}, Vector{0, 0, 1}};
     Sphere s{};
-    auto xs = ray.intersect(s);
+    auto xs = s.intersect(ray);
     EXPECT_EQ(xs.count(), 2);
     EXPECT_DOUBLE_EQ(xs(0).t, 4);
     EXPECT_DOUBLE_EQ(xs(1).t, 6);
@@ -36,7 +40,7 @@ TEST(Raycasting, TangentialIntersectionOfSphere)
 {
     Ray ray{Point{0, 1, -5}, Vector{0, 0, 1}};
     Sphere s{};
-    auto xs = ray.intersect(s);
+    auto xs = s.intersect(ray);
     EXPECT_EQ(xs.count(), 2);
     EXPECT_DOUBLE_EQ(xs(0).t, 5);
     EXPECT_DOUBLE_EQ(xs(1).t, 5);
@@ -46,7 +50,7 @@ TEST(Raycasting, RayMissesASphere)
 {
     Ray ray{Point{0, 2, -5}, Vector{0, 0, 1}};
     Sphere s{};
-    auto xs = ray.intersect(s);
+    auto xs = s.intersect(ray);
     EXPECT_EQ(xs.count(), 0);
 }
 
@@ -54,7 +58,7 @@ TEST(Raycasting, RayOriginInsideSphere)
 {
     Ray ray{Point{0, 0, 0}, Vector{0, 0, 1}};
     Sphere s{};
-    auto xs = ray.intersect(s);
+    auto xs = s.intersect(ray);
     EXPECT_EQ(xs.count(), 2);
     EXPECT_DOUBLE_EQ(xs(0).t, -1);
     EXPECT_DOUBLE_EQ(xs(1).t, 1);
@@ -64,12 +68,16 @@ TEST(Raycasting, RayIsBehindSphere)
 {
     Ray ray{Point{0, 0, 5}, Vector{0, 0, 1}};
     Sphere s{};
-    auto xs = ray.intersect(s);
+    auto xs = s.intersect(ray);
     EXPECT_EQ(xs.count(), 2);
     EXPECT_DOUBLE_EQ(xs(0).t, -6);
     EXPECT_DOUBLE_EQ(xs(1).t, -4);
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Intersections
+////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST(Intersections, IntersectionEncapsulatesObjectAndT)
 {
     // the intersection datatype should encapsulate
@@ -84,7 +92,7 @@ TEST(Intersections, IntersectSetsObjectOnIntersection)
 {
     Ray ray{Point{0, 0, -5}, Vector{0, 0, 1}};
     Sphere s{};
-    auto xs = ray.intersect(s);
+    auto xs = s.intersect(ray);
     EXPECT_EQ(xs.count(), 2);
     EXPECT_EQ(xs(0).shape, s);
     EXPECT_EQ(xs(1).shape, s);
@@ -102,6 +110,19 @@ TEST(Intersections, SortedByIncreasingT)
     EXPECT_EQ(xs(1).t, 2);
     EXPECT_EQ(xs(2).t, 5);
     EXPECT_EQ(xs(3).t, 7);
+}
+
+TEST(Intersections, StaticSortMethod)
+{
+    Sphere s{};
+    std::vector<Intersection> ints{
+        {5, s}, {7, s}, {-3, s}, {2, s}
+    };
+    Intersections::sortIntersectionsAscendingTime(ints);
+    EXPECT_EQ(ints[0].t, -3);
+    EXPECT_EQ(ints[1].t, 2);
+    EXPECT_EQ(ints[2].t, 5);
+    EXPECT_EQ(ints[3].t, 7);
 }
 
 TEST(Intersections, FindHitWhenWithAllPositiveT)
@@ -141,7 +162,6 @@ TEST(Intersections, FindHitWhenWithAllNegativeT)
     auto i = xs.findHit();
     // i should be a miss
     EXPECT_FALSE(i.isHit);
-
 }
 
 TEST(Intersections, HitIsAlwaysLowestNonNegative)
@@ -161,6 +181,29 @@ TEST(Intersections, HitIsAlwaysLowestNonNegative)
     EXPECT_EQ(i, i4);
 }
 
+TEST(Intersections, AddingIntersections)
+{
+    // test for + operator overload with Intersections
+    Sphere s{};
+    Intersection i1{-3, s};
+    Intersection i2{2, s};
+    Intersection i3{5, s};
+    Intersection i4{7, s};
+    Intersections A{{i1, i2}};
+    Intersections B{{i3, i4}};
+    Intersections C{{i1, i2, i3, i4}};
+    auto res = A + B;
+    EXPECT_EQ(res.count(), 4);
+    EXPECT_DOUBLE_EQ(res(0).t, -3);
+    EXPECT_DOUBLE_EQ(res(1).t, 2);
+    EXPECT_DOUBLE_EQ(res(2).t, 5);
+    EXPECT_DOUBLE_EQ(res(3).t, 7);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Raycasting Advanced
+////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST(Raycasting, TranslatingRays)
 {
     Ray r{ Point{1, 2, 3}, Vector{0, 1, 0} };
@@ -199,7 +242,7 @@ TEST(Raycasting, IntersectingScaledSphereWithRay)
     Sphere s{};
     Ray r{ Point{0, 0, -5}, Vector{0, 0, 1} };
     s.setTransform(Transform::scale(2., 2., 2.));
-    auto xs{ r.intersect(s) };
+    auto xs{ s.intersect(r) };
     EXPECT_EQ(xs.count(), 2);
     EXPECT_EQ(xs(0).t, 3.);
     EXPECT_EQ(xs(1).t, 7.);
@@ -210,7 +253,7 @@ TEST(Raycasting, IntersectingTranslatedSphereWithRay)
     Sphere s{};
     Ray r{ Point{0, 0, -5}, Vector{0, 0, 1} };
     s.setTransform(Transform::translation(5., 0., 0.));
-    auto xs{ r.intersect(s) };
+    auto xs{ s.intersect(r) };
     EXPECT_EQ(xs.count(), 0);
 }
 
