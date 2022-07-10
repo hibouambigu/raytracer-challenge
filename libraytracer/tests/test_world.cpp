@@ -102,3 +102,26 @@ TEST_F(WorldBasics, ShadingAnIntersectionInsideShape)
     Colour pixel = w.shadeIntersection(i, r);
     EXPECT_EQ(pixel, Colour(.90498, .90498, .90498));
 }
+
+TEST_F(WorldBasics, PixelWhenTracedRayMisses)
+{
+    Ray r{Point{0, 0, -5}, Vector{0, 1, 0}};
+    Colour pixel{w.traceRayToPixel(r)};
+    EXPECT_EQ(pixel, Colour(0, 0, 0));
+}
+
+TEST_F(WorldBasics, PixelWhenTracedRayHits)
+{
+    Ray r{Point{0, 0, -5}, Vector{0, 0, 1}};
+    Colour pixel{w.traceRayToPixel(r)};
+    EXPECT_EQ(pixel, Colour(.38066, .47583, .2855));
+}
+
+TEST_F(WorldBasics, PixelWhenHitIsBehindTracedRay)
+{
+    s1.setAmbient(1.0);
+    s2.setAmbient(1.0);
+    Ray r{Point{0, 0, .75}, Vector{0, 0, -1}};
+    Colour pixel{w.traceRayToPixel(r)};
+    EXPECT_EQ(pixel, s2.getMaterial().colour);
+}

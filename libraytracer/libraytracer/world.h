@@ -55,6 +55,8 @@ class World
     static IntersectionState computeIntersectionState(Intersection i, Ray ray);
     /// Compute shading at a given Intersection() with a Ray().
     Colour shadeIntersection(Intersection i, Ray ray);
+    /// Cast a Ray() and compute a given pixel Colour() for it.
+    Colour traceRayToPixel(Ray ray);
 
   private:
     Colour shadeIntersectionState(IntersectionState iState);

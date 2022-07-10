@@ -50,9 +50,17 @@ void Shape::setColour(Colour colour)
 {
     material.colour = colour;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 Colour Shape::lightPixel(Light lighting, Tuple point, Tuple eyeV, Tuple normalV)
 {
     return material.getPixel(lighting, point, eyeV, normalV);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void Shape::setAmbient(double ambientAmount)
+{
+    material.ambient = ambientAmount;
 }
 
 

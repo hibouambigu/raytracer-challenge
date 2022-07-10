@@ -102,3 +102,10 @@ Colour World::shadeIntersection(Intersection i, Ray ray)
 {
     return shadeIntersectionState(computeIntersectionState(i, ray));
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+Colour World::traceRayToPixel(Ray ray)
+{
+    Intersection hit = intersect(ray).findHit();
+    return hit.isHit ? shadeIntersection(hit, ray) : Colour{};
+}

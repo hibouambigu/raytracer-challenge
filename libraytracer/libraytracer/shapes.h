@@ -33,11 +33,13 @@ class Shape
     /// Set the material for this Shape to be rendered with
     void setMaterial(Material newMaterial);
     /// Get the material this Shape is rendered with
-    [[nodiscard]] Material getMaterial() const;
+    Material getMaterial() const;
     /// Calculate the normal vector at a specified **world** point on this shape
     virtual Tuple normalAt(Tuple worldPoint) = 0;
     /// Set the colour of this Shape's material.
     virtual void setColour(Colour colour);
+    /// Set the ambient lighting amount on this Shape's Material().
+    void setAmbient(double ambientAmount);
     /// Intersect this Shape() with a Ray(). Returns collection of Intersections from cast Ray.
     virtual Intersections intersect(Ray ray) = 0;
     /// Apply lighting to this shape and compute a single pixel from it.
