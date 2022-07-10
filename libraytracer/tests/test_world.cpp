@@ -19,6 +19,7 @@ class WorldBasics: public ::testing::Test
     void SetUp() override {
         s1.setMaterial(m1);
         s2.setTransform(Transform::scale(.5, .5, .5));
+        w.addLight(&light);
         w.addShape(&s1);
         w.addShape(&s2);
     }
@@ -48,4 +49,56 @@ TEST_F(WorldBasics, RayIntersectsWorld)
     EXPECT_DOUBLE_EQ(xs(1).t, 4.5);
     EXPECT_DOUBLE_EQ(xs(2).t, 5.5);
     EXPECT_DOUBLE_EQ(xs(3).t, 6.0);
+}
+
+TEST_F(WorldBasics, PrecomputesStateOfIntersection)
+{
+    Ray r{Point{0, 0, -5}, Vector{0, 0, 1}};
+    Sphere shape{};
+    Intersection i{4, shape};
+    IntersectionState state = World::computeIntersectionState(i, r);
+    EXPECT_EQ(state.t, i.t);
+    EXPECT_EQ(state.shape, i.shape);
+    EXPECT_EQ(state.point, Point(0, 0, -1));
+    EXPECT_EQ(state.eye, Vector(0, 0, -1));
+    EXPECT_EQ(state.normal, Vector(0, 0, -1));
+}
+
+TEST_F(WorldBasics, HitWhenIntIsOutsideShape)
+{
+    Ray r{Point{0, 0, -5}, Vector{0, 0, 1}};
+    Sphere shape{};
+    Intersection i{4, shape};
+    IntersectionState state = World::computeIntersectionState(i, r);
+    EXPECT_FALSE(state.isInsideShape);
+}
+
+TEST_F(WorldBasics, HitWhenIntIsInsideShape)
+{
+    Ray r{Point{0, 0, 0}, Vector{0, 0, 1}};
+    Sphere shape{};
+    Intersection i{1, shape};
+    IntersectionState state = World::computeIntersectionState(i, r);
+    EXPECT_EQ(state.point, Point(0, 0, 1));
+    EXPECT_EQ(state.eye, Vector(0, 0, -1));
+    EXPECT_TRUE(state.isInsideShape);
+    EXPECT_EQ(state.normal, Vector(0, 0, -1));
+}
+
+TEST_F(WorldBasics, ShadingAnIntersectionOutsideShape)
+{
+    Ray r{Point{0, 0, -5}, Vector{0, 0, 1}};
+    Intersection i{4, s1};
+    Colour pixel = w.shadeIntersection(i, r);
+    EXPECT_EQ(pixel, Colour(.38066, .47583, .2855));
+}
+
+TEST_F(WorldBasics, ShadingAnIntersectionInsideShape)
+{
+    Ray r{Point{0, 0, 0}, Vector{0, 0, 1}};
+    Intersection i{0.5, s2};
+    PointLight light{Point{0, .25, 0}, Colour{1, 1, 1}};
+    w.setLight(&light);
+    Colour pixel = w.shadeIntersection(i, r);
+    EXPECT_EQ(pixel, Colour(.90498, .90498, .90498));
 }

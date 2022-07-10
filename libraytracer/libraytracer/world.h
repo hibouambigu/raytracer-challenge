@@ -14,6 +14,19 @@
 #include "rays.h"
 #include "intersection.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// IntersectionState
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct IntersectionState
+{
+    IntersectionState(Intersection& i, Ray& ray);
+    double t;
+    Shape& shape;
+    Tuple point;
+    Tuple eye;
+    Tuple normal;
+    bool isInsideShape;
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// World
@@ -27,18 +40,24 @@ class World
     /// False if no lights have been added to the World, yet.
     [[nodiscard]] bool hasLighting() const;
     /// Add a Light() to the World.
-    void addLight(Light* newLight);
+    void addLight(Light* light);
     /// Add a Shape() to the World.
     void addShape(Shape* shape);
-    /// Get the lighting for this world.
+    /// Set the first Light() in the World.
+    void setLight(Light* light);
+    /// Get the first Light() for this world.
     Light getLight();
     /// Check if an object exists in this World or not.
     bool containsObject(const Shape& shape);
     /// Intersect this World() with a Ray() and return the sorted Intersections.
     Intersections intersect(Ray ray);
-
+    /// Encapsulate some pre-computed state about an intersection, for use in shading pixels.
+    static IntersectionState computeIntersectionState(Intersection i, Ray ray);
+    /// Compute shading at a given Intersection() with a Ray().
+    Colour shadeIntersection(Intersection i, Ray ray);
 
   private:
-    Light* light;
+    Colour shadeIntersectionState(IntersectionState iState);
+    std::vector<Light*> lights;
     std::vector<Shape*> objects;
 };

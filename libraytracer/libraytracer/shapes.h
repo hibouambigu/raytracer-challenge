@@ -40,6 +40,8 @@ class Shape
     virtual void setColour(Colour colour);
     /// Intersect this Shape() with a Ray(). Returns collection of Intersections from cast Ray.
     virtual Intersections intersect(Ray ray) = 0;
+    /// Apply lighting to this shape and compute a single pixel from it.
+    Colour lightPixel(Light lighting, Tuple point, Tuple eyeV, Tuple normalV);
 
   protected:
     Tuple position; /// position of the Shape in the Scene right now
