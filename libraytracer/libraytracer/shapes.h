@@ -43,7 +43,7 @@ class Shape
 
   protected:
     Tuple position; /// position of the Shape in the Scene right now
-    TransformationMatrix transformation;    /// the transformation to be applied during raycasting
+    TransformationMatrix transformation; /// the transformation to be applied during raycasting
     Material material;  /// The surface material to render this shape with.
 };
 

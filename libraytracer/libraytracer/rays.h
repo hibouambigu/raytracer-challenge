@@ -24,10 +24,8 @@ class Ray
     [[nodiscard]] Tuple getDirection() const;
     /// Get the position at the given distance t along the ray
     Tuple position(double t);
-    /// Intersect this Ray() with a Sphere(). Returns collection of t values where intersections occur.
-//    [[nodiscard]] Intersections intersect(Sphere sphere) const;
     /// Apply a Transform() Matrix(), returning a new Ray.
-    Ray transform(TransformationMatrix t) const;
+    [[nodiscard]] Ray transform(TransformationMatrix t) const;
 
   private:
     Tuple origin;

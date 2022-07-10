@@ -55,9 +55,10 @@ Intersections World::intersect(Ray ray)
 {
     // intersect each object in the World with a Ray,
     //  building a collection of aggregated Intersections
-//    Intersections ints{};
-//    for(const auto& o: objects) {
-//        ints = ints + ray.intersect(o);
-//    }
-//    return Intersections();
+    Intersections ints{};
+    for(const auto& o: objects) {
+        Intersections xs = o->intersect(ray);
+        ints = ints + xs;
+    }
+    return ints;
 }

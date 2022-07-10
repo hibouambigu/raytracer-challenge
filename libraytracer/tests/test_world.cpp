@@ -18,11 +18,10 @@ class WorldBasics: public ::testing::Test
 
     void SetUp() override {
         s1.setMaterial(m1);
-        s2.setTransform(Transform::translation(.5, .5, .5));
+        s2.setTransform(Transform::scale(.5, .5, .5));
         w.addShape(&s1);
         w.addShape(&s2);
     }
-
 };
 
 TEST_F(WorldBasics, WorldIsConstructed)
